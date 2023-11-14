@@ -23,11 +23,9 @@ public class Frame extends JPanel {
         Color myBackgroundColor = null;
         try {
             myBackgroundColor = Color.decode(backgroundColor);
+            this.setBackground(myBackgroundColor);
         } catch (NumberFormatException e) {
             System.err.println("Frame::bgc::The provided hexadecimal color code is not valid.");
-        }
-        if (myBackgroundColor != null) {
-            this.setBackground(myBackgroundColor);
         }
     }
 

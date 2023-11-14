@@ -32,7 +32,7 @@ public class Button extends JButton {
         this.setBorder(null);
         this.setText(text);
         this.setTooltip(toolTip);
-        this.setIcon(icon);
+        this.setIconButton(icon);
         this.toEnabled(enable);
         this.resize(left, top, width, height);
         this.setColor(color);
@@ -78,9 +78,10 @@ public class Button extends JButton {
      *
      * @param pathToIcon The path to the icon image file.
      */
-    public void setIcon(String pathToIcon) {
+    public void setIconButton(String pathToIcon) {
         File iconFile = new File(pathToIcon);
         if (iconFile.exists()) {
+            //add extension files images
             ImageIcon iconImage = new ImageIcon(pathToIcon);
             this.setIcon(iconImage);
         }
@@ -95,11 +96,9 @@ public class Button extends JButton {
         Color myColor = null;
         try {
             myColor = Color.decode(hexaColor);
+            this.setForeground(myColor);
         } catch (NumberFormatException e) {
             System.err.println("Button::setColor::The provided hexadecimal color code is not valid.");
-        }
-        if (myColor != null) {
-            this.setForeground(myColor);
         }
     }
 
@@ -112,12 +111,10 @@ public class Button extends JButton {
         Color myBackgroundColor = null;
         try {
             myBackgroundColor = Color.decode(hexaColor);
-        } catch (NumberFormatException e) {
-            System.err.println("Button::setBackgroundColor::The provided hexadecimal color code is not valid.");
-        }
-        if (myBackgroundColor != null) {
             this.setBackground(myBackgroundColor);
             this.backgroundColor = hexaColor;
+        } catch (NumberFormatException e) {
+            System.err.println("Button::setBackgroundColor::The provided hexadecimal color code is not valid.");
         }
     }
 

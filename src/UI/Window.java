@@ -26,19 +26,17 @@ public class Window extends JFrame {
      */
     private Window(int width, int height, String title, String icon, boolean fixed) {
         this.setTitle(title);
-
         // Set Icon
         File iconFile = new File(icon);
         if (iconFile.exists()) {
+            //extension images
             ImageIcon iconImage = new ImageIcon(icon);
             this.setIconImage(iconImage.getImage());
         }
-
         this.setSize(width, height);
         this.setLocationRelativeTo(null);
         this.setLayout(null);
         this.setResizable(!fixed);
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
