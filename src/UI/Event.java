@@ -14,7 +14,6 @@ public class Event implements ActionListener {
             }
         }
         */
-
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -23,4 +22,3 @@ public class Event implements ActionListener {
 
     }
 }
-)
