@@ -38,6 +38,7 @@ public class Button extends JButton {
         this.setColor(color);
         this.setBackgroundColor(backgroundColor);
         this.setFont(fontSize, fontFamily, isBold, isItalic);
+        this.backgroundColor=backgroundColor;
     }
 
 
