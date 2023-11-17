@@ -15,6 +15,7 @@ public class Event implements ActionListener {
     StringTableFile file;
     final String player1Color="#800080";
     final String player2Color="#000000";
+    final String intermediateColor="#F5F5DC";
     final String defaultColor="#ffffff";
     List<Position> listOfValidPosition=null;
     private byte player=1;
@@ -94,9 +95,9 @@ public class Event implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        file=new StringTableFile(buttons);
+        file=StringTableFile.getInstance(buttons);
         Button sourceButton = (Button) e.getSource();
-        if(Objects.equals(sourceButton.getBackgroundColor(), defaultColor)){
+        if(Objects.equals(sourceButton.getBackgroundColor(), defaultColor) || Objects.equals(sourceButton.getBackgroundColor(), intermediateColor)){
             String tooltip=sourceButton.getToolTipText();
             String[] pos=tooltip.split(",");
             int ligne=Integer.parseInt(pos[0]);
@@ -115,6 +116,9 @@ public class Event implements ActionListener {
                                     player=1;
                                 }
                         }else if(listOfValidPosition.size()==2){
+                            for (var positioni:listOfValidPosition) {
+                                this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(intermediateColor);
+                            }
                             if(player==1){
                                 sourceButton.setBackgroundColor(player1Color);
                             }else if(player==2){
@@ -122,8 +126,12 @@ public class Event implements ActionListener {
                             }
                             move=1;
                         }
+                    file.saveBackgroundColorToFile("data.txt");
                 }else if(move==1 && position.isIn(listOfValidPosition)){
                     move=0;
+                    for (var positioni:listOfValidPosition) {
+                        this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(defaultColor);
+                    }
                     if(player==1){
                         sourceButton.setBackgroundColor(player1Color);
                         player=2;
@@ -132,22 +140,19 @@ public class Event implements ActionListener {
                         player=1;
                     }
                 }
-        }
-        if(move==0){
-            file.saveBackgroundColorToFile("data.txt");
-        }
-        if(this.playerWin()==1){
-            labelMessage.toVisible(true);
-            labelMessage.setText("PLayer 1 win");
-            this.toEnableBtns(false);
-        }else if(this.playerWin()==2){
-            labelMessage.toVisible(true);
-            labelMessage.setText("PLayer 2 win");
-            this.toEnableBtns(false);
-        }else {
-            labelMessage.toVisible(false);
-            labelMessage.setText("");
-            this.toEnableBtns(true);
+            if(this.playerWin()==1){
+                labelMessage.toVisible(true);
+                labelMessage.setText("PLayer 1 win");
+                this.toEnableBtns(false);
+            }else if(this.playerWin()==2){
+                labelMessage.toVisible(true);
+                labelMessage.setText("PLayer 2 win");
+                this.toEnableBtns(false);
+            }else {
+                labelMessage.toVisible(false);
+                labelMessage.setText("");
+                this.toEnableBtns(true);
+            }
         }
     }
 }

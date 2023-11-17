@@ -44,11 +44,9 @@ public class Position {
      * @return A list of Position objects representing possible moves.
      */
     public List<Position> getPossibleMove(byte player, Button[][] btns,String defaultColor) {
-        // One: left, right
-        // Two: top, bottom
+        // One: left, right                 // Two: top, bottom
         List<Position> list = new ArrayList<>();
         Position pos = null;
-
         if (player == 2) {
             pos = new Position(this.X - 1, Y);
             if (pos.isValid() && Objects.equals(btns[pos.getX()][pos.getY()].getBackgroundColor(), defaultColor))

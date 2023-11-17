@@ -83,11 +83,12 @@ public class DomineeringGame {
             for (int j = 0; j < row; j++) {
                 this.buttons[i][j] = this.domineeringFrame.addButton(j * 68, i * 58, 67, 57, "", "", i + "," + j, true, "#ffffff", defaultColor, 0, "Arial", false, false);
                 this.buttons[i][j].addActionListener(event);
+                this.buttons[i][j].toEnabled(true);
             }
         }
         event.setLabel(this.labelMessage);
         event.setButtons(this.buttons);
-        file=new StringTableFile(buttons);
+        file=StringTableFile.getInstance(buttons);
         file.loadBackgroundColorFromFile("data.txt",buttons);
 
         this.goToMainFrameButton.addActionListener(new ActionListener() {
@@ -105,7 +106,8 @@ public class DomineeringGame {
         });
     }
     private void restart(){
-        if(buttons!=null){
+        if(/*buttons!=null*/false){
+            Event event=new Event();
             for (int i = 0; i < column; i++) {
                 for (int j = 0; j < row; j++) {
                     this.buttons[i][j].setBackgroundColor(defaultColor);
@@ -114,8 +116,8 @@ public class DomineeringGame {
             }
             this.labelMessage.toVisible(false);
             this.labelMessage.setText("");
-            this.file.setBackgroundColors(buttons);
-            this.file.saveBackgroundColorToFile("data.txt");
+            file=StringTableFile.getInstance(buttons);
+            file.setBackgroundColors(this.buttons);
         }
     }
 }
