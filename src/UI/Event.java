@@ -1,6 +1,8 @@
 package UI;
 
 import Helper.Position;
+import Helper.StringTableFile;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -10,12 +12,13 @@ import java.util.Objects;
  * for a user interface associated with the "Domineering" game.
  */
 public class Event implements ActionListener {
+    StringTableFile file;
     final String player1Color="#800080";
     final String player2Color="#000000";
     final String defaultColor="#ffffff";
     List<Position> listOfValidPosition=null;
     private byte player=1;
-    private int move=0;
+    private byte move=0;
     private Button[][] buttons;
     private Label labelMessage=null;
     /**
@@ -91,7 +94,7 @@ public class Event implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Access the source of the event (button) and retrieve its text
+        file=new StringTableFile(buttons);
         Button sourceButton = (Button) e.getSource();
         if(Objects.equals(sourceButton.getBackgroundColor(), defaultColor)){
             String tooltip=sourceButton.getToolTipText();
@@ -130,6 +133,9 @@ public class Event implements ActionListener {
                     }
                 }
         }
+        if(move==0){
+            file.saveBackgroundColorToFile("data.txt");
+        }
         if(this.playerWin()==1){
             labelMessage.toVisible(true);
             labelMessage.setText("PLayer 1 win");
@@ -143,6 +149,5 @@ public class Event implements ActionListener {
             labelMessage.setText("");
             this.toEnableBtns(true);
         }
-
     }
 }

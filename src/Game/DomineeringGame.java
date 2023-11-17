@@ -1,5 +1,6 @@
 package Game;
 
+import Helper.StringTableFile;
 import UI.*;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 public class DomineeringGame {
 
     //region Argument
+    StringTableFile file;
     final String defaultColor="#ffffff";//of buttons
     final String mainBgColor="#00008b";
     final String backgroundGame="#000000";
@@ -85,6 +87,9 @@ public class DomineeringGame {
         }
         event.setLabel(this.labelMessage);
         event.setButtons(this.buttons);
+        file=new StringTableFile(buttons);
+        file.loadBackgroundColorFromFile("data.txt",buttons);
+
         this.goToMainFrameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -104,10 +109,13 @@ public class DomineeringGame {
             for (int i = 0; i < column; i++) {
                 for (int j = 0; j < row; j++) {
                     this.buttons[i][j].setBackgroundColor(defaultColor);
+                    this.buttons[i][j].toEnabled(true);
                 }
             }
             this.labelMessage.toVisible(false);
             this.labelMessage.setText("");
+            this.file.setBackgroundColors(buttons);
+            this.file.saveBackgroundColorToFile("data.txt");
         }
     }
 }
