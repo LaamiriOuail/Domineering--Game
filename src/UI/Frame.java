@@ -48,8 +48,8 @@ public class Frame extends JPanel {
      * @param italic        Set to true for italic text.
      * @return The created Label component.
      */
-    public Label addLabel(int left, int top, int width, int height, String text, String icon, String toolTip, boolean enable, String color, String backgroundColor, int fontSize, String fontFamily, boolean bold, boolean italic) {
-        Label label = new Label(left, top, width, height, text, icon, toolTip, enable, color, backgroundColor, fontSize, fontFamily, bold, italic);
+    public Label addLabel(int left, int top, int width, int height, String text, String icon, String toolTip, boolean enable,boolean visible, String color, String backgroundColor, int fontSize, String fontFamily, boolean bold, boolean italic) {
+        Label label = new Label(left, top, width, height, text, icon, toolTip, enable,visible, color, backgroundColor, fontSize, fontFamily, bold, italic);
         this.add(label);
         return label;
     }

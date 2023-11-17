@@ -8,7 +8,6 @@ import java.io.File;
  * A custom JLabel with additional features for setting text, tooltip, icon, enabled state, color, background color, and font.
  */
 public class Label extends JLabel {
-    private String backgroundColor;
 
     /**
      * Constructs a Label with specified properties.
@@ -28,7 +27,7 @@ public class Label extends JLabel {
      * @param isBold         Set to true for bold text.
      * @param isItalic       Set to true for italic text.
      */
-    public Label(int left, int top, int width, int height, String text, String icon, String toolTip, boolean isEnable, String color, String backgroundColor, int fontSize, String fontFamily, boolean isBold, boolean isItalic) {
+    public Label(int left, int top, int width, int height, String text, String icon, String toolTip, boolean isEnable,boolean isVisible, String color, String backgroundColor, int fontSize, String fontFamily, boolean isBold, boolean isItalic) {
         this.resize(left, top, width, height);
         this.setText(text);
         this.setTooltip(toolTip);
@@ -38,6 +37,7 @@ public class Label extends JLabel {
         this.setColor(color);
         this.setBackgroundColor(backgroundColor);
         this.setFont(fontSize, fontFamily, isBold, isItalic);
+        this.toVisible(isVisible);
     }
 
     /**
@@ -77,7 +77,9 @@ public class Label extends JLabel {
     public void toEnabled(boolean enable) {
         this.setEnabled(enable);
     }
-
+    public void toVisible(boolean visible){
+        this.setVisible(visible);
+    }
     /**
      * Sets the icon for the Label if the icon file exists.
      *
@@ -122,7 +124,7 @@ public class Label extends JLabel {
         }
         if (myBackgroundColor != null) {
             this.setBackground(myBackgroundColor);
-            this.backgroundColor = hexaColor;
+            this.setOpaque(true);
         }
     }
 
@@ -143,16 +145,18 @@ public class Label extends JLabel {
                 break;
             }
         }
+        int fontStyle = Font.PLAIN;
+        if (isBold && isItalic) {
+            fontStyle = Font.ITALIC + Font.BOLD;
+        } else if (isBold) {
+            fontStyle = Font.BOLD;
+        } else if (isItalic) {
+            fontStyle = Font.ITALIC;
+        }
         if (isFontAvailable) {
-            int fontStyle = Font.PLAIN;
-            if (isBold && isItalic) {
-                fontStyle = Font.ITALIC + Font.BOLD;
-            } else if (isBold) {
-                fontStyle = Font.BOLD;
-            } else if (isItalic) {
-                fontStyle = Font.ITALIC;
-            }
             this.setFont(new Font(fontFamily, fontStyle, fontSize));
+        }else{
+            this.setFont(new Font("Arial", fontStyle, fontSize));
         }
     }
 
@@ -161,9 +165,5 @@ public class Label extends JLabel {
      *
      * @return The background color in hexadecimal format.
      */
-    public String getBackgroundColor() {
-        if (this.backgroundColor != null)
-            return this.backgroundColor;
-        return "";
-    }
+
 }
