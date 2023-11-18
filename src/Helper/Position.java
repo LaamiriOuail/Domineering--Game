@@ -85,7 +85,12 @@ public class Position {
     public int getY() {
         return Y;
     }
-    //docString
+    /**
+     * Checks if the current position is present in the given list of positions.
+     *
+     * @param positions A list of Position objects to check against.
+     * @return True if the position is in the list, false otherwise.
+     */
     public boolean isIn(List<Position> positions){
         boolean exist=false;
         for (var position:positions) {

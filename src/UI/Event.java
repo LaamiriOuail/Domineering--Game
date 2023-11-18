@@ -12,13 +12,19 @@ import java.util.Objects;
  * for a user interface associated with the "Domineering" game.
  */
 public class Event implements ActionListener {
-    StringTableFile file;
+    private StringTableFile file;
+    private final String filename="data.txt";
     final String player1Color="#800080";
     final String player2Color="#000000";
     final String intermediateColor="#F5F5DC";
     final String defaultColor="#ffffff";
     List<Position> listOfValidPosition=null;
     private byte player=1;
+
+    public void setMove(byte move) {
+        this.move = move;
+    }
+
     private byte move=0;
     private Button[][] buttons;
     private Label labelMessage=null;
@@ -115,6 +121,8 @@ public class Event implements ActionListener {
                                     this.buttons[listOfValidPosition.get(0).getX()][listOfValidPosition.get(0).getY()].setBackgroundColor(player2Color);
                                     player=1;
                                 }
+                            file.setBackgroundColors(buttons);
+                            file.saveBackgroundColorToFile(filename);
                         }else if(listOfValidPosition.size()==2){
                             for (var positioni:listOfValidPosition) {
                                 this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(intermediateColor);
@@ -126,7 +134,7 @@ public class Event implements ActionListener {
                             }
                             move=1;
                         }
-                    file.saveBackgroundColorToFile("data.txt");
+
                 }else if(move==1 && position.isIn(listOfValidPosition)){
                     move=0;
                     for (var positioni:listOfValidPosition) {
@@ -139,6 +147,8 @@ public class Event implements ActionListener {
                         sourceButton.setBackgroundColor(player2Color);
                         player=1;
                     }
+                    file.setBackgroundColors(buttons);
+                    file.saveBackgroundColorToFile(filename);
                 }
             if(this.playerWin()==1){
                 labelMessage.toVisible(true);

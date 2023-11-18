@@ -11,10 +11,11 @@ import java.awt.event.ActionListener;
 public class DomineeringGame {
 
     //region Argument
-    StringTableFile file;
-    final String defaultColor="#ffffff";//of buttons
-    final String mainBgColor="#00008b";
-    final String backgroundGame="#000000";
+    private StringTableFile file;
+    private final String filename="data.txt";
+    private final String defaultColor="#ffffff";//of buttons
+    private final String mainBgColor="#00008b";
+    private final String backgroundGame="#000000";
     private Window window;
     private Frame mainFrame;
     private Button btnGameWithPerson;
@@ -28,8 +29,9 @@ public class DomineeringGame {
     private Button[][] buttons;
     private boolean firstButtonClicked=false;
     private boolean secondButtonClicked=false;
-    int row;
-    int column;
+    private int row;
+    private int column;
+    private Event event;
     private static DomineeringGame domineeringGameInstance;
     //endregion
     //region Constructeur
@@ -39,6 +41,7 @@ public class DomineeringGame {
         this.window.Show();
         this.row=row;
         this.column=column;
+        event=new Event();
     }
     public static DomineeringGame getInstance(int row , int column ){
         if(domineeringGameInstance==null){
@@ -78,46 +81,45 @@ public class DomineeringGame {
         this.buttons = new Button[this.column][this.row];
         this.labelMessage=this.oneToOneGameFrame.addLabel(30,80,540,60,"","","",true,false,mainBgColor,"#ffffff",24,"Arial",false,true);
         this.labelMessage.setHorizontalAlignment(SwingConstants.CENTER);
-        Event event=new Event();
         for (int i = 0; i < column; i++) {
             for (int j = 0; j < row; j++) {
                 this.buttons[i][j] = this.domineeringFrame.addButton(j * 68, i * 58, 67, 57, "", "", i + "," + j, true, "#ffffff", defaultColor, 0, "Arial", false, false);
                 this.buttons[i][j].addActionListener(event);
-                this.buttons[i][j].toEnabled(true);
             }
         }
         event.setLabel(this.labelMessage);
         event.setButtons(this.buttons);
         file=StringTableFile.getInstance(buttons);
-        file.loadBackgroundColorFromFile("data.txt",buttons);
+        file.loadBackgroundColorFromFile(filename,buttons);
 
         this.goToMainFrameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DomineeringGame.this.oneToOneGameFrame.Close();
                 DomineeringGame.this.makeMainFrame();
+                DomineeringGame.this.event.setMove((byte)0);
             }
         });
         this.restartGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                DomineeringGame.this.domineeringFrame.Close();
                 DomineeringGame.this.restart();
+                DomineeringGame.this.domineeringFrame.Show();
             }
         });
     }
     private void restart(){
-        if(/*buttons!=null*/false){
-            Event event=new Event();
             for (int i = 0; i < column; i++) {
                 for (int j = 0; j < row; j++) {
                     this.buttons[i][j].setBackgroundColor(defaultColor);
                     this.buttons[i][j].toEnabled(true);
                 }
             }
+            event.setMove((byte)0);
             this.labelMessage.toVisible(false);
             this.labelMessage.setText("");
             file=StringTableFile.getInstance(buttons);
-            file.setBackgroundColors(this.buttons);
-        }
+            file.saveVoid(filename);
     }
 }
