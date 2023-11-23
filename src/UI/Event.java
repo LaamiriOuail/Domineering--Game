@@ -122,7 +122,7 @@ public class Event implements ActionListener {
                                     player=1;
                                 }
                             file.setBackgroundColors(buttons);
-                            file.saveBackgroundColorToFile(filename);
+                            file.saveBackgroundColorToFile();
                         }else if(listOfValidPosition.size()==2){
                             for (var positioni:listOfValidPosition) {
                                 this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(intermediateColor);
@@ -148,7 +148,7 @@ public class Event implements ActionListener {
                         player=1;
                     }
                     file.setBackgroundColors(buttons);
-                    file.saveBackgroundColorToFile(filename);
+                    file.saveBackgroundColorToFile();
                 }
             if(this.playerWin()==1){
                 labelMessage.toVisible(true);
@@ -164,5 +164,17 @@ public class Event implements ActionListener {
                 this.toEnableBtns(true);
             }
         }
+    }
+
+    public void setPlayer(byte player) {
+        this.player = player;
+    }
+
+    public byte getPlayer() {
+        return player;
+    }
+
+    public byte getMove() {
+        return move;
     }
 }

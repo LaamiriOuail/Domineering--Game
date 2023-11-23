@@ -41,11 +41,7 @@ public class TextField extends JTextField {
      *
      * @param text The text to set for the TextField.
      */
-    public void setText(String text) {
-        if (!"".equals(text)) {
-            this.setText(text);
-        }
-    }
+
 
     /**
      * Sets the tooltip for the TextField if the tooltip is not empty.

@@ -6,10 +6,9 @@ import UI.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.Objects;
 
 public class DomineeringGame {
-
     //region Argument
     private StringTableFile file;
     private final String filename="data.txt";
@@ -21,14 +20,19 @@ public class DomineeringGame {
     private Button btnGameWithPerson;
     private Button btnGameWithAgent;
     private Button btnMainExit;
+    private Button btnsauvgardedGamebtn;
     private Frame oneToOneGameFrame;
     private Frame domineeringFrame;
     private Button goToMainFrameButton;
     private Button restartGameButton;
+    private Button sauvgardebtn;
+    private Frame sauvgardeFrame;
+    private TextField inputTitle;
+    private Button submitSauvgarde;
+    private Button refuseSauvgarde;
+    private Label labelInputSauvgarde;
     private Label labelMessage=null;
     private Button[][] buttons;
-    private boolean firstButtonClicked=false;
-    private boolean secondButtonClicked=false;
     private int row;
     private int column;
     private Event event;
@@ -53,9 +57,10 @@ public class DomineeringGame {
     //region make Main Window
     private void makeMainFrame() {
         this.mainFrame = window.addFrame(0, 0, 600, 600, mainBgColor);
-        this.btnGameWithPerson = this.mainFrame.addButton(100, 100, 400, 100, "Play with friend", "", "Click me to play with your friend", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
-        this.btnGameWithAgent = this.mainFrame.addButton(100, 250, 400, 100, "Play Laptop", "", "Click me to play with your laptop", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
-        this.btnMainExit = this.mainFrame.addButton(100, 400, 400, 100, "Exit", "", "Click me to exit", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
+        this.btnGameWithPerson = this.mainFrame.addButton(100, 70, 400, 100, "Play with friend", "", "Click me to play with your friend", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
+        this.btnGameWithAgent = this.mainFrame.addButton(100, 190, 400, 100, "Play Laptop", "", "Click me to play with your laptop", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
+        this.btnsauvgardedGamebtn = this.mainFrame.addButton(100, 310, 400, 100, "Sauvgarded Game", "", "Click me to exit", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
+        this.btnMainExit = this.mainFrame.addButton(100, 430, 400, 100, "Exit", "", "Click me to exit", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
         this.btnMainExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,6 +72,7 @@ public class DomineeringGame {
             public void actionPerformed(ActionEvent e) {
                 DomineeringGame.this.makeOneToOneFrame();
                 DomineeringGame.this.mainFrame.Close();
+                DomineeringGame.this.mainFrame=null;
 
             }
         });
@@ -76,8 +82,9 @@ public class DomineeringGame {
     private void makeOneToOneFrame() {
         this.oneToOneGameFrame = window.addFrame(0, 0, 600, 600, mainBgColor);
         this.domineeringFrame = this.oneToOneGameFrame.addFrame(30, 150, 540, 406, backgroundGame);
-        this.goToMainFrameButton=this.oneToOneGameFrame.addButton(10,10, 100, 57, "Return", "", "Back to home page ", true, "#000000", "#ffffff", 24, "Arial", false, false);
-        this.restartGameButton=this.oneToOneGameFrame.addButton(490,10, 100, 57, "Restart", "", "Restart game", true, "#000000", "#ffffff", 24, "Arial", false, false);        // Create a 2D array to store buttons
+        this.goToMainFrameButton=this.oneToOneGameFrame.addButton(10,10, 100, 57, "Return", "", "Back to home page ", true, "#000000", "#ffffff", 20, "Arial", false, false);
+        this.restartGameButton=this.oneToOneGameFrame.addButton(490,10, 100, 57, "Restart", "", "Restart game", true, "#000000", "#ffffff", 20, "Arial", false, false);        // Create a 2D array to store buttons
+        this.sauvgardebtn=this.oneToOneGameFrame.addButton(350,10, 120, 57, "Sauvgarde", "", "sauvgarde game", true, "#000000", "#ffffff", 20, "Arial", false, false);        // Create a 2D array to store buttons
         this.buttons = new Button[this.column][this.row];
         this.labelMessage=this.oneToOneGameFrame.addLabel(30,80,540,60,"","","",true,false,mainBgColor,"#ffffff",24,"Arial",false,true);
         this.labelMessage.setHorizontalAlignment(SwingConstants.CENTER);
@@ -90,14 +97,62 @@ public class DomineeringGame {
         event.setLabel(this.labelMessage);
         event.setButtons(this.buttons);
         file=StringTableFile.getInstance(buttons);
-        file.loadBackgroundColorFromFile(filename,buttons);
+        file.loadBackgroundColorFromFile(buttons);
 
         this.goToMainFrameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DomineeringGame.this.oneToOneGameFrame.Close();
+                DomineeringGame.this.oneToOneGameFrame=null;
                 DomineeringGame.this.makeMainFrame();
                 DomineeringGame.this.event.setMove((byte)0);
+            }
+        });
+        this.sauvgardebtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(DomineeringGame.this.sauvgardeFrame==null){
+                    DomineeringGame.this.oneToOneGameFrame.Close();
+                    DomineeringGame.this.sauvgardeFrame=DomineeringGame.this.oneToOneGameFrame.addFrame(30,100,540,50,mainBgColor);
+                    DomineeringGame.this.inputTitle=DomineeringGame.this.sauvgardeFrame.addInput(80,10,200,30,"","","","#ffffff",18,"#000000",false,false,true);
+                    DomineeringGame.this.submitSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(300,10, 100, 30, "Submit", "", "Sauvgarder game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
+                    DomineeringGame.this.refuseSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(410,10, 100, 30, "refuse", "", "refuse sauvgarde game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
+                    DomineeringGame.this.labelInputSauvgarde=DomineeringGame.this.sauvgardeFrame.addLabel(10,10,80,30,"Title :","","",true,true,"#ffffff",mainBgColor,18,"",true,false);
+                    DomineeringGame.this.oneToOneGameFrame.Show();
+                    DomineeringGame.this.refuseSauvgarde.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            DomineeringGame.this.oneToOneGameFrame.Close();
+                            DomineeringGame.this.sauvgardeFrame.Close();
+                            DomineeringGame.this.sauvgardeFrame=null;
+                            DomineeringGame.this.oneToOneGameFrame.Show();
+                        }
+                    });
+                    DomineeringGame.this.submitSauvgarde.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            DomineeringGame.this.oneToOneGameFrame.Close();
+                            if(!Objects.equals(DomineeringGame.this.inputTitle.getText(), "")){
+                                byte player=event.getPlayer();
+                            /*
+                            if(event.getMove()==1){
+                                if(event.getPlayer()==1) player=2;
+                                else if(event.getPlayer()==2) player=1;
+                            }else if(event.getMove()==0){
+                                player=event.getPlayer();
+                            }
+                            */
+                                file.saveSauvgardeToFile(buttons, player,DomineeringGame.this.inputTitle.getText());
+                                DomineeringGame.this.sauvgardeFrame.Close();
+                                DomineeringGame.this.sauvgardeFrame=null;
+                            }else{
+                                DomineeringGame.this.labelInputSauvgarde.setColor("#ff0000");
+                            }
+                            DomineeringGame.this.oneToOneGameFrame.Show();
+                        }
+                    });
+                }
+
             }
         });
         this.restartGameButton.addActionListener(new ActionListener() {
@@ -120,6 +175,11 @@ public class DomineeringGame {
             this.labelMessage.toVisible(false);
             this.labelMessage.setText("");
             file=StringTableFile.getInstance(buttons);
-            file.saveVoid(filename);
+            file.saveVoidColors();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        this.window=null;
     }
 }
