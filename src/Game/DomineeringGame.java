@@ -70,10 +70,9 @@ public class DomineeringGame {
         this.btnGameWithPerson.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DomineeringGame.this.makeOneToOneFrame();
                 DomineeringGame.this.mainFrame.Close();
-                DomineeringGame.this.mainFrame=null;
-
+                DomineeringGame.this.makeOneToOneFrame();
+                DomineeringGame.this.finalizeMainFrame();
             }
         });
     }
@@ -103,7 +102,7 @@ public class DomineeringGame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DomineeringGame.this.oneToOneGameFrame.Close();
-                DomineeringGame.this.oneToOneGameFrame=null;
+                DomineeringGame.this.finalizeOneToOneFrame();
                 DomineeringGame.this.makeMainFrame();
                 DomineeringGame.this.event.setMove((byte)0);
             }
@@ -111,48 +110,7 @@ public class DomineeringGame {
         this.sauvgardebtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(DomineeringGame.this.sauvgardeFrame==null){
-                    DomineeringGame.this.oneToOneGameFrame.Close();
-                    DomineeringGame.this.sauvgardeFrame=DomineeringGame.this.oneToOneGameFrame.addFrame(30,100,540,50,mainBgColor);
-                    DomineeringGame.this.inputTitle=DomineeringGame.this.sauvgardeFrame.addInput(80,10,200,30,"","","","#ffffff",18,"#000000",false,false,true);
-                    DomineeringGame.this.submitSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(300,10, 100, 30, "Submit", "", "Sauvgarder game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
-                    DomineeringGame.this.refuseSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(410,10, 100, 30, "refuse", "", "refuse sauvgarde game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
-                    DomineeringGame.this.labelInputSauvgarde=DomineeringGame.this.sauvgardeFrame.addLabel(10,10,80,30,"Title :","","",true,true,"#ffffff",mainBgColor,18,"",true,false);
-                    DomineeringGame.this.oneToOneGameFrame.Show();
-                    DomineeringGame.this.refuseSauvgarde.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            DomineeringGame.this.oneToOneGameFrame.Close();
-                            DomineeringGame.this.sauvgardeFrame.Close();
-                            DomineeringGame.this.sauvgardeFrame=null;
-                            DomineeringGame.this.oneToOneGameFrame.Show();
-                        }
-                    });
-                    DomineeringGame.this.submitSauvgarde.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            DomineeringGame.this.oneToOneGameFrame.Close();
-                            if(!Objects.equals(DomineeringGame.this.inputTitle.getText(), "")){
-                                byte player=event.getPlayer();
-                            /*
-                            if(event.getMove()==1){
-                                if(event.getPlayer()==1) player=2;
-                                else if(event.getPlayer()==2) player=1;
-                            }else if(event.getMove()==0){
-                                player=event.getPlayer();
-                            }
-                            */
-                                file.saveSauvgardeToFile(buttons, player,DomineeringGame.this.inputTitle.getText());
-                                DomineeringGame.this.sauvgardeFrame.Close();
-                                DomineeringGame.this.sauvgardeFrame=null;
-                            }else{
-                                DomineeringGame.this.labelInputSauvgarde.setColor("#ff0000");
-                            }
-                            DomineeringGame.this.oneToOneGameFrame.Show();
-                        }
-                    });
-                }
-
+                DomineeringGame.this.makeSauvgardeOneGameFrame();
             }
         });
         this.restartGameButton.addActionListener(new ActionListener() {
@@ -163,6 +121,21 @@ public class DomineeringGame {
                 DomineeringGame.this.domineeringFrame.Show();
             }
         });
+    }
+    private void finalizeMainFrame() {
+        this.mainFrame = null;
+        this.btnGameWithPerson = null;
+        this.btnGameWithAgent = null;
+        this.btnsauvgardedGamebtn = null;
+        this.btnMainExit = null;
+    }
+        private void finalizeOneToOneFrame() {
+        this.oneToOneGameFrame = null;
+        this.domineeringFrame = null;
+        this.goToMainFrameButton=null;
+        this.restartGameButton=null;
+        this.sauvgardebtn=null;
+        this.labelMessage=null;
     }
     private void restart(){
             for (int i = 0; i < column; i++) {
@@ -177,7 +150,52 @@ public class DomineeringGame {
             file=StringTableFile.getInstance(buttons);
             file.saveVoidColors();
     }
+    private void makeSauvgardedFrame(){
 
+    }
+    private void makeSauvgardeOneGameFrame(){
+        if(DomineeringGame.this.sauvgardeFrame==null){
+            DomineeringGame.this.oneToOneGameFrame.Close();
+            DomineeringGame.this.sauvgardeFrame=DomineeringGame.this.oneToOneGameFrame.addFrame(30,100,540,50,mainBgColor);
+            DomineeringGame.this.inputTitle=DomineeringGame.this.sauvgardeFrame.addInput(80,10,200,30,"","","","#ffffff",18,"#000000",false,false,true);
+            DomineeringGame.this.submitSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(300,10, 100, 30, "Submit", "", "Sauvgarder game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
+            DomineeringGame.this.refuseSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(410,10, 100, 30, "refuse", "", "refuse sauvgarde game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
+            DomineeringGame.this.labelInputSauvgarde=DomineeringGame.this.sauvgardeFrame.addLabel(10,10,80,30,"Title :","","",true,true,"#ffffff",mainBgColor,18,"",true,false);
+            DomineeringGame.this.oneToOneGameFrame.Show();
+            DomineeringGame.this.refuseSauvgarde.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    DomineeringGame.this.oneToOneGameFrame.Close();
+                    DomineeringGame.this.sauvgardeFrame.Close();
+                    DomineeringGame.this.sauvgardeFrame=null;
+                    DomineeringGame.this.oneToOneGameFrame.Show();
+                }
+            });
+            DomineeringGame.this.submitSauvgarde.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    DomineeringGame.this.oneToOneGameFrame.Close();
+                    if(!Objects.equals(DomineeringGame.this.inputTitle.getText(), "")){
+                        byte player=event.getPlayer();
+                            /*
+                            if(event.getMove()==1){
+                                if(event.getPlayer()==1) player=2;
+                                else if(event.getPlayer()==2) player=1;
+                            }else if(event.getMove()==0){
+                                player=event.getPlayer();
+                            }
+                            */
+                        file.saveSauvgardeToFile(buttons, player,DomineeringGame.this.inputTitle.getText());
+                        DomineeringGame.this.sauvgardeFrame.Close();
+                        DomineeringGame.this.sauvgardeFrame=null;
+                    }else{
+                        DomineeringGame.this.labelInputSauvgarde.setColor("#ff0000");
+                    }
+                    DomineeringGame.this.oneToOneGameFrame.Show();
+                }
+            });
+        }
+    }
     @Override
     protected void finalize() throws Throwable {
         this.window=null;

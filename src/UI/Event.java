@@ -20,6 +20,7 @@ public class Event implements ActionListener {
     final String defaultColor="#ffffff";
     List<Position> listOfValidPosition=null;
     private byte player=1;
+    private byte machine=0;
 
     public void setMove(byte move) {
         this.move = move;
@@ -54,6 +55,40 @@ public class Event implements ActionListener {
                     this.buttons[i][j].toEnabled(enable);
                 }
             }
+        }
+    }
+    private byte getNumbreOfMoveByPlayer(byte player){
+        byte nbrPossibleMove=0;
+        if(buttons!=null){
+            if(player==1){
+                for(byte i=0;i<buttons.length;i++){
+                    for(byte j=0;j<buttons[0].length-1;j++){
+                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player1Color) && Objects.equals(buttons[i][j+1].getBackgroundColor(), player1Color)){
+                            nbrPossibleMove+=1;
+                            j++;
+                        }
+                    }
+                }
+            }else if(player==2){
+                for(byte i=0;i<buttons.length-1;i++){
+                    for(byte j=0;j<buttons[0].length;j++){
+                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player2Color) && Objects.equals(buttons[i+1][j].getBackgroundColor(), player2Color)){
+                            nbrPossibleMove+=1;
+                            j++;
+                        }
+                    }
+                }
+            }
+        }
+        return nbrPossibleMove;
+    }
+    private byte getCurrentPlayer(){
+        if(this.getNumbreOfMoveByPlayer((byte)1)==this.getNumbreOfMoveByPlayer((byte)2)){
+            return (byte)1;
+        }else if(this.getNumbreOfMoveByPlayer((byte)1)>this.getNumbreOfMoveByPlayer((byte)2)){
+            return (byte)2;
+        }else{
+            return (byte)1;
         }
     }
     /**
@@ -102,38 +137,40 @@ public class Event implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         file=StringTableFile.getInstance(buttons);
+        player=this.getCurrentPlayer();
         Button sourceButton = (Button) e.getSource();
-        if(Objects.equals(sourceButton.getBackgroundColor(), defaultColor) || Objects.equals(sourceButton.getBackgroundColor(), intermediateColor)){
-            String tooltip=sourceButton.getToolTipText();
-            String[] pos=tooltip.split(",");
-            int ligne=Integer.parseInt(pos[0]);
-            int column=Integer.parseInt(pos[1]);
-            Position position=new Position(ligne,column);
+        if(player!=machine){
+            if(Objects.equals(sourceButton.getBackgroundColor(), defaultColor) || Objects.equals(sourceButton.getBackgroundColor(), intermediateColor)){
+                String tooltip=sourceButton.getToolTipText();
+                String[] pos=tooltip.split(",");
+                int ligne=Integer.parseInt(pos[0]);
+                int column=Integer.parseInt(pos[1]);
+                Position position=new Position(ligne,column);
                 if(move==0){
-                        this.listOfValidPosition=position.getPossibleMove(player,this.buttons,this.defaultColor);
-                        if(listOfValidPosition.size()==1) {
-                                if(player==1){
-                                    sourceButton.setBackgroundColor(player1Color);
-                                    this.buttons[listOfValidPosition.get(0).getX()][listOfValidPosition.get(0).getY()].setBackgroundColor(player1Color);
-                                    player=2;
-                                }else if(player==2){
-                                    sourceButton.setBackgroundColor(player2Color);
-                                    this.buttons[listOfValidPosition.get(0).getX()][listOfValidPosition.get(0).getY()].setBackgroundColor(player2Color);
-                                    player=1;
-                                }
-                            file.setBackgroundColors(buttons);
-                            file.saveBackgroundColorToFile();
-                        }else if(listOfValidPosition.size()==2){
-                            for (var positioni:listOfValidPosition) {
-                                this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(intermediateColor);
-                            }
-                            if(player==1){
-                                sourceButton.setBackgroundColor(player1Color);
-                            }else if(player==2){
-                                sourceButton.setBackgroundColor(player2Color);
-                            }
-                            move=1;
+                    this.listOfValidPosition=position.getPossibleMove(player,this.buttons,this.defaultColor);
+                    if(listOfValidPosition.size()==1) {
+                        if(player==1){
+                            sourceButton.setBackgroundColor(player1Color);
+                            this.buttons[listOfValidPosition.get(0).getX()][listOfValidPosition.get(0).getY()].setBackgroundColor(player1Color);
+                            player=2;
+                        }else if(player==2){
+                            sourceButton.setBackgroundColor(player2Color);
+                            this.buttons[listOfValidPosition.get(0).getX()][listOfValidPosition.get(0).getY()].setBackgroundColor(player2Color);
+                            player=1;
                         }
+                        file.setBackgroundColors(buttons);
+                        file.saveBackgroundColorToFile();
+                    }else if(listOfValidPosition.size()==2){
+                        for (var positioni:listOfValidPosition) {
+                            this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(intermediateColor);
+                        }
+                        if(player==1){
+                            sourceButton.setBackgroundColor(player1Color);
+                        }else if(player==2){
+                            sourceButton.setBackgroundColor(player2Color);
+                        }
+                        move=1;
+                    }
 
                 }else if(move==1 && position.isIn(listOfValidPosition)){
                     move=0;
@@ -150,18 +187,26 @@ public class Event implements ActionListener {
                     file.setBackgroundColors(buttons);
                     file.saveBackgroundColorToFile();
                 }
-            if(this.playerWin()==1){
-                labelMessage.toVisible(true);
-                labelMessage.setText("PLayer 1 win");
-                this.toEnableBtns(false);
-            }else if(this.playerWin()==2){
-                labelMessage.toVisible(true);
-                labelMessage.setText("PLayer 2 win");
-                this.toEnableBtns(false);
-            }else {
-                labelMessage.toVisible(false);
-                labelMessage.setText("");
-                this.toEnableBtns(true);
+                if(this.playerWin()==1){
+                    labelMessage.toVisible(true);
+                    labelMessage.setText("PLayer 1 win");
+                    this.toEnableBtns(false);
+                }else if(this.playerWin()==2){
+                    labelMessage.toVisible(true);
+                    labelMessage.setText("PLayer 2 win");
+                    this.toEnableBtns(false);
+                }else {
+                    labelMessage.toVisible(false);
+                    labelMessage.setText("");
+                    this.toEnableBtns(true);
+                }
+            }
+        }else{
+            //MinMax alpha beta choice the perfect move to win
+            if(player==1){
+                player=2;
+            }else if(player==2){
+                player=1;
             }
         }
     }
