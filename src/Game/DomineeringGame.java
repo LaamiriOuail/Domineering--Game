@@ -1,11 +1,13 @@
 package Game;
 
+import Helper.Sauvgard;
 import Helper.StringTableFile;
 import UI.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -178,6 +180,12 @@ public class DomineeringGame {
     private void makeSauvgardeOneGameFrame(){
         if(DomineeringGame.this.sauvgardeFrame==null){
             DomineeringGame.this.oneToOneGameFrame.Close();
+            if(DomineeringGame.this.labelMessage!=null){
+                if (!Objects.equals(labelMessage.getText(), "")) {
+                    DomineeringGame.this.labelMessage.setText("");
+                    DomineeringGame.this.labelMessage.toVisible(false);
+                }
+            }
             DomineeringGame.this.sauvgardeFrame=DomineeringGame.this.oneToOneGameFrame.addFrame(30,100,540,50,mainBgColor);
             DomineeringGame.this.inputTitle=DomineeringGame.this.sauvgardeFrame.addInput(80,10,200,30,"","","","#ffffff",18,"#000000",false,false,true);
             DomineeringGame.this.submitSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(300,10, 100, 30, "Submit", "", "Sauvgarder game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
@@ -194,11 +202,12 @@ public class DomineeringGame {
                 }
             });
             DomineeringGame.this.submitSauvgarde.addActionListener(new ActionListener() {
+
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     DomineeringGame.this.oneToOneGameFrame.Close();
+                    DomineeringGame.this.file=StringTableFile.getInstance(buttons);
                     if(!Objects.equals(DomineeringGame.this.inputTitle.getText(), "")){
-                        byte player=event.getPlayer();
                             /*
                             if(event.getMove()==1){
                                 if(event.getPlayer()==1) player=2;
@@ -207,7 +216,7 @@ public class DomineeringGame {
                                 player=event.getPlayer();
                             }
                             */
-                        file.saveSauvgardeToFile(buttons,DomineeringGame.this.inputTitle.getText());
+                        DomineeringGame.this.file.saveSauvgardeToFile(buttons,DomineeringGame.this.inputTitle.getText());
                         if(DomineeringGame.this.labelMessage!=null){
                             labelMessage.setText("Game sauvgarded successufully");
                             labelMessage.toVisible(true);
@@ -218,6 +227,7 @@ public class DomineeringGame {
                         DomineeringGame.this.labelInputSauvgarde.setColor("#ff0000");
                     }
                     DomineeringGame.this.oneToOneGameFrame.Show();
+                    ArrayList<Sauvgard> sauvgards=file.uploadSauvgardeFromFile();
                 }
             });
         }

@@ -80,35 +80,34 @@ public class StringTableFile {
             e.printStackTrace();
         }
     }
-    public List<Sauvgard> uploadSauvgardeFromFile() {
+    public ArrayList<Sauvgard> uploadSauvgardeFromFile() {
         String formattedDateTime = "";
-        byte player = 0;
         String title ="";
-        List<Sauvgard> groupeSauvgarde=new ArrayList<>();
+        ArrayList<Sauvgard> groupeSauvgarde=new ArrayList<>();
         String[][] backgroundColors = new String[8][7];
         try (BufferedReader reader = new BufferedReader(new FileReader(this.fileSauvgarde))) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                int row = 0;  // Track the current row for color data
-                while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(",");
-                    if (parts.length == 3) {
-                        formattedDateTime = parts[0];
-                        title = parts[1];
-                        row = 0;  // Reset the row when a new set of data starts
-                    } else if (row < 8) {  // Ensure we don't exceed the array bounds
-                        // Assuming the remaining lines contain color data
-                        String[] colors = line.split(",");
-                        for (byte col = 0; col < colors.length && col < 7; col++) {
-                            backgroundColors[row][col] = colors[col];
-                        }
-                        row++;
+            int row = 0;
+            int index=0;
+            while ((line = reader.readLine()) != null && row < backgroundColors.length) {
+                String[] colors = line.split(",");
+                if(colors.length==2){
+                    formattedDateTime=colors[0];
+                    title=colors[1];
+                    row=0;
+                }else{
+                    for (byte col = 0; col < colors.length && col < backgroundColors[row].length; col++) {
+                        backgroundColors[row][col] = colors[col];
+                    }
+                    row++;
+                    if(row==7){
+                        groupeSauvgarde.add(new Sauvgard(backgroundColors,title,formattedDateTime));
                     }
                 }
 
             }
+            //}
             return groupeSauvgarde;
-            //return new Sauvgard(backgroundColors,title,formattedDateTime);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

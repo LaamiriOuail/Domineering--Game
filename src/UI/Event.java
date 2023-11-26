@@ -137,7 +137,7 @@ public class Event implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(labelMessage!=null){
-            if (Objects.equals(labelMessage.getText(), "")) {
+            if (!Objects.equals(labelMessage.getText(), "")) {
                 labelMessage.setText("");
                 labelMessage.toVisible(false);
             }
