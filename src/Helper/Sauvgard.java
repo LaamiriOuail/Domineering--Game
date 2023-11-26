@@ -6,7 +6,7 @@ public class Sauvgard {
     String title;
     String formattedDateTime;
 
-    public Sauvgard(String[][] backgroundColors, byte player, String title, String formattedDateTime) {
+    public Sauvgard(String[][] backgroundColors,String title, String formattedDateTime) {
         this.backgroundColors = new String[backgroundColors.length][backgroundColors[0].length];
         this.player = player;
         this.title = title;

@@ -19,16 +19,15 @@ public class Event implements ActionListener {
     final String intermediateColor="#F5F5DC";
     final String defaultColor="#ffffff";
     List<Position> listOfValidPosition=null;
+    private Label labelMessage=null;
     private byte player=1;
     private byte machine=0;
 
     public void setMove(byte move) {
         this.move = move;
     }
-
     private byte move=0;
     private Button[][] buttons;
-    private Label labelMessage=null;
     /**
      * Sets the array of buttons for the game board.
      *
@@ -45,9 +44,10 @@ public class Event implements ActionListener {
             }
         }
     }
-    public void setLabel(Label label){
-        this.labelMessage=label;
+    public void setLabelMessage(Label labelMessage){
+        this.labelMessage=labelMessage;
     }
+
     public void toEnableBtns(boolean enable){
         if(buttons!=null){
             for (int i = 0; i < buttons.length; i++) {
@@ -136,6 +136,12 @@ public class Event implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(labelMessage!=null){
+            if (Objects.equals(labelMessage.getText(), "")) {
+                labelMessage.setText("");
+                labelMessage.toVisible(false);
+            }
+        }
         file=StringTableFile.getInstance(buttons);
         player=this.getCurrentPlayer();
         Button sourceButton = (Button) e.getSource();

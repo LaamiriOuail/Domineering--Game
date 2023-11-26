@@ -5,6 +5,9 @@ import UI.Button;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The StringTableFile class represents a utility class for managing string table data
  * related to the background colors of UI buttons. It provides methods to save and load
@@ -52,18 +55,16 @@ public class StringTableFile {
             }
         }
     }
-    public void saveSauvgardeToFile(Button[][] buttons,byte player,String title){
+    public void saveSauvgardeToFile(Button[][] buttons,String title){
         //if(move==1) player is player-1 or player +1
         try (PrintWriter writer = new PrintWriter(new FileWriter(this.fileSauvgarde, true))) {
             // Get the current date and time
             LocalDateTime now = LocalDateTime.now();
-
             // Define the desired date and time format
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
             // Format the current date and time using the formatter
             String formattedDateTime = now.format(formatter);
-            writer.println(formattedDateTime+","+player+","+title);
+            writer.println(formattedDateTime+","+title);
             for (int i = 0; i < backgroundColors.length; i++) {
                 for (byte j = 0; j < backgroundColors[0].length; j++) {
                     writer.print(backgroundColors[i][j]);
@@ -79,28 +80,24 @@ public class StringTableFile {
             e.printStackTrace();
         }
     }
-    public Sauvgard uploadSauvgardeFromFile() {
+    public List<Sauvgard> uploadSauvgardeFromFile() {
         String formattedDateTime = "";
         byte player = 0;
         String title ="";
+        List<Sauvgard> groupeSauvgarde=new ArrayList<>();
         String[][] backgroundColors = new String[8][7];
         try (BufferedReader reader = new BufferedReader(new FileReader(this.fileSauvgarde))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                // Split the line into parts using the comma as a delimiter
-                String[] parts = line.split(",");
-                if(parts.length==3){
-                    // Extract the data from the parts array
-                    formattedDateTime = parts[0];
-                    player = Byte.parseByte(parts[1]);
-                    title = parts[2];
-                }
-
-                else {
-                    int row = 0;
-                    // Assuming the remaining lines contain color data
-                    // You can adjust this part based on your actual data structure
-                    while ((line = reader.readLine()) != null && !line.isEmpty()) {
+                int row = 0;  // Track the current row for color data
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length == 3) {
+                        formattedDateTime = parts[0];
+                        title = parts[1];
+                        row = 0;  // Reset the row when a new set of data starts
+                    } else if (row < 8) {  // Ensure we don't exceed the array bounds
+                        // Assuming the remaining lines contain color data
                         String[] colors = line.split(",");
                         for (byte col = 0; col < colors.length && col < 7; col++) {
                             backgroundColors[row][col] = colors[col];
@@ -110,7 +107,8 @@ public class StringTableFile {
                 }
 
             }
-            return new Sauvgard(backgroundColors,player,title,formattedDateTime);
+            return groupeSauvgarde;
+            //return new Sauvgard(backgroundColors,title,formattedDateTime);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

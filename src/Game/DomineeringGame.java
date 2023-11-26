@@ -7,36 +7,38 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class DomineeringGame {
     //region Argument
-    private StringTableFile file;
+    private StringTableFile file=null;
     private final String filename="data.txt";
     private final String defaultColor="#ffffff";//of buttons
     private final String mainBgColor="#00008b";
     private final String backgroundGame="#000000";
-    private Window window;
-    private Frame mainFrame;
-    private Button btnGameWithPerson;
-    private Button btnGameWithAgent;
-    private Button btnMainExit;
-    private Button btnsauvgardedGamebtn;
-    private Frame oneToOneGameFrame;
-    private Frame domineeringFrame;
-    private Button goToMainFrameButton;
-    private Button restartGameButton;
-    private Button sauvgardebtn;
-    private Frame sauvgardeFrame;
-    private TextField inputTitle;
-    private Button submitSauvgarde;
-    private Button refuseSauvgarde;
-    private Label labelInputSauvgarde;
+    private Window window=null;
+    private Frame mainFrame=null;
+    private Button btnGameWithPerson=null;
+    private Button btnGameWithAgent=null;
+    private Button btnMainExit=null;
+    private Button btnsauvgardedGamebtn=null;
+    private Frame oneToOneGameFrame=null;
+    private Frame domineeringFrame=null;
+    private Button goToMainFrameButton=null;
+    private Button restartGameButton=null;
+    private Button sauvgardebtn=null;
+    private Frame sauvgardeFrame=null;
+    private TextField inputTitle=null;
+    private Button submitSauvgarde=null;
+    private Button refuseSauvgarde=null;
+    private Label labelInputSauvgarde=null;
     private Label labelMessage=null;
-    private Button[][] buttons;
+    private Frame SauvgardedFrame=null;
+    private Button[][] buttons=null;
     private int row;
     private int column;
-    private Event event;
-    private static DomineeringGame domineeringGameInstance;
+    private Event event=null;
+    private static DomineeringGame domineeringGameInstance=null;
     //endregion
     //region Constructeur
     private DomineeringGame(int row , int column) {
@@ -75,6 +77,14 @@ public class DomineeringGame {
                 DomineeringGame.this.finalizeMainFrame();
             }
         });
+        this.btnsauvgardedGamebtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DomineeringGame.this.mainFrame.Close();
+                DomineeringGame.this.makeSauvgardedFrame();
+                DomineeringGame.this.finalizeMainFrame();
+            }
+        });
     }
     //endregion
     //region make One to One play window
@@ -93,7 +103,7 @@ public class DomineeringGame {
                 this.buttons[i][j].addActionListener(event);
             }
         }
-        event.setLabel(this.labelMessage);
+        event.setLabelMessage(this.labelMessage);
         event.setButtons(this.buttons);
         file=StringTableFile.getInstance(buttons);
         file.loadBackgroundColorFromFile(buttons);
@@ -129,13 +139,16 @@ public class DomineeringGame {
         this.btnsauvgardedGamebtn = null;
         this.btnMainExit = null;
     }
-        private void finalizeOneToOneFrame() {
+    private void finalizeOneToOneFrame() {
         this.oneToOneGameFrame = null;
         this.domineeringFrame = null;
         this.goToMainFrameButton=null;
         this.restartGameButton=null;
         this.sauvgardebtn=null;
         this.labelMessage=null;
+    }
+    private void finalizeSauvgardedFrame(){
+
     }
     private void restart(){
             for (int i = 0; i < column; i++) {
@@ -151,7 +164,16 @@ public class DomineeringGame {
             file.saveVoidColors();
     }
     private void makeSauvgardedFrame(){
-
+        this.SauvgardedFrame= window.addFrame(0, 0, 600, 600, mainBgColor);
+        this.goToMainFrameButton=this.SauvgardedFrame.addButton(10,10, 100, 57, "Return", "", "Back to home page ", true, "#000000", "#ffffff", 20, "Arial", false, false);
+        this.goToMainFrameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DomineeringGame.this.SauvgardedFrame.Close();
+                DomineeringGame.this.finalizeSauvgardedFrame();
+                DomineeringGame.this.makeMainFrame();
+            }
+        });
     }
     private void makeSauvgardeOneGameFrame(){
         if(DomineeringGame.this.sauvgardeFrame==null){
@@ -185,7 +207,11 @@ public class DomineeringGame {
                                 player=event.getPlayer();
                             }
                             */
-                        file.saveSauvgardeToFile(buttons, player,DomineeringGame.this.inputTitle.getText());
+                        file.saveSauvgardeToFile(buttons,DomineeringGame.this.inputTitle.getText());
+                        if(DomineeringGame.this.labelMessage!=null){
+                            labelMessage.setText("Game sauvgarded successufully");
+                            labelMessage.toVisible(true);
+                        }
                         DomineeringGame.this.sauvgardeFrame.Close();
                         DomineeringGame.this.sauvgardeFrame=null;
                     }else{
