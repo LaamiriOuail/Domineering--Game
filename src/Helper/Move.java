@@ -15,4 +15,10 @@ public class Move {
     public Position getPosotion2() {
         return posotion2;
     }
+    public boolean hasPosition(Position position){
+        if(position1.equals(position)|| posotion2.equals(position)){
+            return true;
+        }
+        return false;
+    }
 }

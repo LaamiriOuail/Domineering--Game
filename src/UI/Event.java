@@ -1,11 +1,13 @@
 package UI;
 
+import Helper.Move;
 import Helper.Position;
 import Helper.StringTableFile;
 import Search.DomineeringSearch;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 /**
@@ -59,32 +61,47 @@ public class Event implements ActionListener {
             }
         }
     }
-    private byte getNumbreOfMoveByPlayer(byte player) {
-        byte numberOfPossibleMoves = 0;
-
-        if (buttons != null) {
-            if (player == 1) {
-                for (byte i = 0; i < buttons.length; i++) {
-                    for (byte j = 0; j < buttons[0].length - 1; j++) {
-                        if (Objects.equals(buttons[i][j].getBackgroundColor(), player1Color) && Objects.equals(buttons[i][j + 1].getBackgroundColor(), player1Color)) {
-                            numberOfPossibleMoves += 1;
+    private byte getNumbreOfMoveByPlayer(byte player){
+        ArrayList<Move> groupMove=new ArrayList<>();
+        if(buttons!=null){
+            boolean exist=false;
+            if(player==1){
+                for(byte i=0;i<buttons.length;i++){
+                    for(byte j=0;j<buttons[0].length-1;j++){
+                        exist=false;
+                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player1Color) && Objects.equals(buttons[i][j+1].getBackgroundColor(), player1Color)){
+                            for(byte k=0;k<groupMove.size();k++){
+                                if(groupMove.get(k).hasPosition(new Position(i,j)) || groupMove.get(k).hasPosition(new Position(i,j+1))){
+                                    exist=true;
+                                    break;
+                                }
+                            }
+                            if(!exist){
+                                groupMove.add(new Move(new Position(i,j),new Position(i,j+1)));
+                            }
                         }
                     }
                 }
-            } else if (player == 2) {
-                for (byte i = 0; i < buttons.length - 1; i++) {
-                    for (byte j = 0; j < buttons[0].length; j++) {
-                        if (Objects.equals(buttons[i][j].getBackgroundColor(), player2Color)
-                                && Objects.equals(buttons[i + 1][j].getBackgroundColor(), player2Color)) {
-                            numberOfPossibleMoves += 1;
-                            i++;
+            }else if(player==2){
+                for(byte i=0;i<buttons.length-1;i++){
+                    for(byte j=0;j<buttons[0].length;j++){
+                        exist=false;
+                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player2Color) && Objects.equals(buttons[i+1][j].getBackgroundColor(), player2Color)){
+                            for(byte k=0;k<groupMove.size();k++){
+                                if(groupMove.get(k).hasPosition(new Position(i,j)) || groupMove.get(k).hasPosition(new Position(i+1,j))){
+                                    exist=true;
+                                    break;
+                                }
+                            }
+                            if(!exist){
+                                groupMove.add(new Move(new Position(i,j),new Position(i+1,j)));
+                            }
                         }
                     }
                 }
             }
         }
-
-        return numberOfPossibleMoves;
+        return (byte) groupMove.size();
     }
 
     private byte getCurrentPlayer(){
@@ -149,6 +166,12 @@ public class Event implements ActionListener {
         }
         file=StringTableFile.getInstance(buttons);
         player=this.getCurrentPlayer();
+        System.out.println("----------------------------------------");
+        System.out.println("player 1 : "+getNumbreOfMoveByPlayer((byte)1));
+        System.out.println("player 2 : "+getNumbreOfMoveByPlayer((byte)2));
+        System.out.println("----------------------------------------");
+        System.out.println("player  : "+player);
+        System.out.println("----------------------------------------");
         Button sourceButton = (Button) e.getSource();
         if(player!=machine){
             if(Objects.equals(sourceButton.getBackgroundColor(), defaultColor) || Objects.equals(sourceButton.getBackgroundColor(), intermediateColor)){
