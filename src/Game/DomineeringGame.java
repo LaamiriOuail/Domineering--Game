@@ -167,7 +167,6 @@ public class DomineeringGame {
         this.SauvgardedTableFrame=null;
         this.SauvgardedFrame=null;
         this.goToMainFrameButton=null;
-
     }
     private void restart(){
             for (int i = 0; i < column; i++) {
@@ -247,13 +246,11 @@ public class DomineeringGame {
                                 DomineeringGame.this.finalizeSauvgardedFrame();
                                 Sauvgard svg = sauvgards.get(id - 1);
                                 DomineeringGame.this.makeOneToOneFrame();
-                                System.out.println(DomineeringGame.this.buttons.length);
-                                System.out.println(svg.getBackgroundColors().length);
-                                System.out.println(DomineeringGame.this.buttons[0].length);
-                                System.out.println(svg.getBackgroundColors()[0].length);
                                 for (byte i = 0; i < svg.getBackgroundColors().length; i++) {
                                     for (byte j = 0; j < svg.getBackgroundColors()[0].length; j++) {
-                                        DomineeringGame.this.buttons[i][j].setBackgroundColor(svg.getBackgroundColors()[i][j]);
+                                        if(svg.getBackgroundColors()[i][j]!=null){
+                                            DomineeringGame.this.buttons[i][j].setBackgroundColor(svg.getBackgroundColors()[i][j]);
+                                        }
                                     }
                                 }
                             }

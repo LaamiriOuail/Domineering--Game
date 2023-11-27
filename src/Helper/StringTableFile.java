@@ -89,7 +89,6 @@ public class StringTableFile {
         try (BufferedReader reader = new BufferedReader(new FileReader(this.fileSauvgarde))) {
             String line;
             int row = 0;
-            int index=0;
             while ((line = reader.readLine()) != null && row < backgroundColorss.length) {
                 String[] colors = line.split(",");
                 if(colors.length==2){
@@ -104,12 +103,6 @@ public class StringTableFile {
                     row++;
                     if(row==7){
                         groupeSauvgarde.add(new Sauvgard(backgroundColorss,title,formattedDateTime));
-                        for (int i=0;i<backgroundColorss.length;i++){
-                            for (int j=0;j<backgroundColorss[0].length;j++){
-                                System.out.println(backgroundColorss[i][j]);
-                            }
-                        }
-                        System.out.println("----------------------------");
                     }
                 }
 
