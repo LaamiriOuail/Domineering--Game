@@ -109,6 +109,12 @@ public class Button extends JButton {
      * @param hexaColor The background color in hexadecimal format.
      */
     public void setBackgroundColor(String hexaColor) {
+        if (hexaColor == null) {
+            // Handle the case where hexaColor is null, e.g., set a default color
+            System.err.println("Button::setBackgroundColor::The provided hexadecimal color code is null.");
+            return;
+        }
+
         Color myBackgroundColor = null;
         try {
             myBackgroundColor = Color.decode(hexaColor);
@@ -118,6 +124,7 @@ public class Button extends JButton {
             System.err.println("Button::setBackgroundColor::The provided hexadecimal color code is not valid.");
         }
     }
+
 
     /**
      * Sets the font properties for the Button.

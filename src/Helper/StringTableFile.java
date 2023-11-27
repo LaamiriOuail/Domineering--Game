@@ -50,7 +50,8 @@ public class StringTableFile {
             backgroundColors=new String[buttons.length][buttons[0].length];
             for (byte i = 0; i < backgroundColors.length; i++) {
                 for (byte j = 0; j < backgroundColors[0].length; j++) {
-                    backgroundColors[i][j]=buttons[i][j].getBackgroundColor();
+                    if(buttons[i][j]!=null)
+                        backgroundColors[i][j]=buttons[i][j].getBackgroundColor();
                 }
             }
         }
@@ -84,24 +85,31 @@ public class StringTableFile {
         String formattedDateTime = "";
         String title ="";
         ArrayList<Sauvgard> groupeSauvgarde=new ArrayList<>();
-        String[][] backgroundColors = new String[8][7];
+        String[][] backgroundColorss = new String[8][7];
         try (BufferedReader reader = new BufferedReader(new FileReader(this.fileSauvgarde))) {
             String line;
             int row = 0;
             int index=0;
-            while ((line = reader.readLine()) != null && row < backgroundColors.length) {
+            while ((line = reader.readLine()) != null && row < backgroundColorss.length) {
                 String[] colors = line.split(",");
                 if(colors.length==2){
                     formattedDateTime=colors[0];
                     title=colors[1];
                     row=0;
                 }else{
-                    for (byte col = 0; col < colors.length && col < backgroundColors[row].length; col++) {
-                        backgroundColors[row][col] = colors[col];
+
+                    for (byte col = 0; col < colors.length && col < backgroundColorss[row].length; col++) {
+                        backgroundColorss[row][col] = colors[col];
                     }
                     row++;
                     if(row==7){
-                        groupeSauvgarde.add(new Sauvgard(backgroundColors,title,formattedDateTime));
+                        groupeSauvgarde.add(new Sauvgard(backgroundColorss,title,formattedDateTime));
+                        for (int i=0;i<backgroundColorss.length;i++){
+                            for (int j=0;j<backgroundColorss[0].length;j++){
+                                System.out.println(backgroundColorss[i][j]);
+                            }
+                        }
+                        System.out.println("----------------------------");
                     }
                 }
 

@@ -3,8 +3,21 @@ package Game;
 import Helper.Sauvgard;
 import Helper.StringTableFile;
 import UI.*;
+import UI.Button;
+import UI.Event;
+import UI.Frame;
+import UI.Label;
+import UI.TextField;
+import UI.Window;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -36,6 +49,7 @@ public class DomineeringGame {
     private Label labelInputSauvgarde=null;
     private Label labelMessage=null;
     private Frame SauvgardedFrame=null;
+    private Frame SauvgardedTableFrame=null;
     private Button[][] buttons=null;
     private int row;
     private int column;
@@ -49,7 +63,8 @@ public class DomineeringGame {
         this.window.Show();
         this.row=row;
         this.column=column;
-        event=new Event();
+        this.event=new Event();
+        this.buttons=new Button[this.column][this.row];
     }
     public static DomineeringGame getInstance(int row , int column ){
         if(domineeringGameInstance==null){
@@ -96,7 +111,6 @@ public class DomineeringGame {
         this.goToMainFrameButton=this.oneToOneGameFrame.addButton(10,10, 100, 57, "Return", "", "Back to home page ", true, "#000000", "#ffffff", 20, "Arial", false, false);
         this.restartGameButton=this.oneToOneGameFrame.addButton(490,10, 100, 57, "Restart", "", "Restart game", true, "#000000", "#ffffff", 20, "Arial", false, false);        // Create a 2D array to store buttons
         this.sauvgardebtn=this.oneToOneGameFrame.addButton(350,10, 120, 57, "Sauvgarde", "", "sauvgarde game", true, "#000000", "#ffffff", 20, "Arial", false, false);        // Create a 2D array to store buttons
-        this.buttons = new Button[this.column][this.row];
         this.labelMessage=this.oneToOneGameFrame.addLabel(30,80,540,60,"","","",true,false,mainBgColor,"#ffffff",24,"Arial",false,true);
         this.labelMessage.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < column; i++) {
@@ -150,6 +164,9 @@ public class DomineeringGame {
         this.labelMessage=null;
     }
     private void finalizeSauvgardedFrame(){
+        this.SauvgardedTableFrame=null;
+        this.SauvgardedFrame=null;
+        this.goToMainFrameButton=null;
 
     }
     private void restart(){
@@ -168,6 +185,7 @@ public class DomineeringGame {
     private void makeSauvgardedFrame(){
         this.SauvgardedFrame= window.addFrame(0, 0, 600, 600, mainBgColor);
         this.goToMainFrameButton=this.SauvgardedFrame.addButton(10,10, 100, 57, "Return", "", "Back to home page ", true, "#000000", "#ffffff", 20, "Arial", false, false);
+        this.makeSauvgardedTable();
         this.goToMainFrameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -176,6 +194,75 @@ public class DomineeringGame {
                 DomineeringGame.this.makeMainFrame();
             }
         });
+    }
+    private void makeSauvgardedTable(){
+        this.SauvgardedTableFrame=this.SauvgardedFrame.addFrame(10, 115, 580, 485, mainBgColor);
+        this.SauvgardedTableFrame.setLayout(new BorderLayout());
+        file=StringTableFile.getInstance(buttons);
+        ArrayList<Sauvgard> sauvgards=file.uploadSauvgardeFromFile();
+        DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[]{"ID", "Description", "Date"});
+        JTable table = new JTable(model);
+        // Set the preferred width for the "ID" column
+        // Set the preferred width for the ID column
+        int idColumnIndex = 0;  // Assuming the ID is in the first column
+        int idColumnWidth = 10;  // Set your desired width for the ID column
+        table.getColumnModel().getColumn(0).setPreferredWidth(2);
+        table.getColumnModel().getColumn(1).setPreferredWidth(250);
+        table.getColumnModel().getColumn(2).setPreferredWidth(180);
+        // Custom TableCellRenderer to set font size
+        TableCellRenderer customRenderer = new DefaultTableCellRenderer() {
+            Font font = new Font("Arial", Font.PLAIN, 18); // Set your desired font size
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setFont(font);
+                return c;
+            }
+        };
+
+        // Apply the custom renderer to all columns
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(customRenderer);
+        }
+        for(byte i=0;i<sauvgards.size();i++){
+            model.addRow(new Object[]{model.getRowCount() + 1, sauvgards.get(i).getTitle(), sauvgards.get(i).getFormattedDateTime()});
+        }
+
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (!e.getValueIsAdjusting()) {
+                        int selectedRow = table.getSelectedRow();
+
+                        // Check if a row is selected
+                        if (selectedRow != -1 && selectedRow < sauvgards.size()) {
+                            int idColumnIndex = 0;  // Assuming the ID is in the first column
+                            Object selectedId = table.getValueAt(selectedRow, idColumnIndex);
+
+                            // Check if selectedId is not null and is of the expected type
+                            if (selectedId != null && selectedId instanceof Integer) {
+                                int id = (int) selectedId;
+                                DomineeringGame.this.SauvgardedFrame.Close();
+                                DomineeringGame.this.finalizeSauvgardedFrame();
+                                Sauvgard svg = sauvgards.get(id - 1);
+                                DomineeringGame.this.makeOneToOneFrame();
+                                System.out.println(DomineeringGame.this.buttons.length);
+                                System.out.println(svg.getBackgroundColors().length);
+                                System.out.println(DomineeringGame.this.buttons[0].length);
+                                System.out.println(svg.getBackgroundColors()[0].length);
+                                for (byte i = 0; i < svg.getBackgroundColors().length; i++) {
+                                    for (byte j = 0; j < svg.getBackgroundColors()[0].length; j++) {
+                                        DomineeringGame.this.buttons[i][j].setBackgroundColor(svg.getBackgroundColors()[i][j]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        });
+        JScrollPane scrollPane = new JScrollPane(table);
+        this.SauvgardedTableFrame.add(scrollPane, BorderLayout.CENTER);
     }
     private void makeSauvgardeOneGameFrame(){
         if(DomineeringGame.this.sauvgardeFrame==null){
@@ -190,7 +277,7 @@ public class DomineeringGame {
             DomineeringGame.this.inputTitle=DomineeringGame.this.sauvgardeFrame.addInput(80,10,200,30,"","","","#ffffff",18,"#000000",false,false,true);
             DomineeringGame.this.submitSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(300,10, 100, 30, "Submit", "", "Sauvgarder game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
             DomineeringGame.this.refuseSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(410,10, 100, 30, "refuse", "", "refuse sauvgarde game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
-            DomineeringGame.this.labelInputSauvgarde=DomineeringGame.this.sauvgardeFrame.addLabel(10,10,80,30,"Title :","","",true,true,"#ffffff",mainBgColor,18,"",true,false);
+            DomineeringGame.this.labelInputSauvgarde=DomineeringGame.this.sauvgardeFrame.addLabel(10,10,80,30,"Description :","","",true,true,"#ffffff",mainBgColor,22,"",true,false);
             DomineeringGame.this.oneToOneGameFrame.Show();
             DomineeringGame.this.refuseSauvgarde.addActionListener(new ActionListener() {
                 @Override
