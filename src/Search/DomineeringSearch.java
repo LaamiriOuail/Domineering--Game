@@ -21,6 +21,8 @@ public class DomineeringSearch {
     public static DomineeringSearch getInstance(Button buttons[][]){
         if(domineeringSearchInstance==null){
             domineeringSearchInstance=new DomineeringSearch(buttons);
+        }else{
+            domineeringSearchInstance.setButtons(buttons);
         }
         return domineeringSearchInstance;
     }

@@ -59,13 +59,39 @@ public class Event implements ActionListener {
             }
         }
     }
-    private byte getNumbreOfMoveByPlayer(byte player){
-        domineeringSearch=DomineeringSearch.getInstance(buttons);
-        return domineeringSearch.getNumbreOfMoveByPlayer(player);
+    public byte getNumbreOfMoveByPlayer(byte player){
+        byte nbrPossibleMove=0;
+        if(buttons!=null){
+            if(player==1){
+                for(byte i=0;i<buttons.length;i++){
+                    for(byte j=0;j<buttons[0].length-1;j++){
+                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player1Color) && Objects.equals(buttons[i][j+1].getBackgroundColor(), player1Color)){
+                            nbrPossibleMove+=1;
+                            j++;
+                        }
+                    }
+                }
+            }else if(player==2){
+                for(byte i=0;i<buttons.length-1;i++){
+                    for(byte j=0;j<buttons[0].length;j++){
+                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player2Color) && Objects.equals(buttons[i+1][j].getBackgroundColor(), player2Color)){
+                            nbrPossibleMove+=1;
+                            j++;
+                        }
+                    }
+                }
+            }
+        }
+        return nbrPossibleMove;
     }
-    private byte getCurrentPlayer(){
-        domineeringSearch=DomineeringSearch.getInstance(buttons);
-        return domineeringSearch.getCurrentPlayer();
+    public byte getCurrentPlayer(){
+        if(this.getNumbreOfMoveByPlayer((byte)1)==this.getNumbreOfMoveByPlayer((byte)2)){
+            return (byte)1;
+        }else if(this.getNumbreOfMoveByPlayer((byte)1)>this.getNumbreOfMoveByPlayer((byte)2)){
+            return (byte)2;
+        }else{
+            return (byte)1;
+        }
     }
     /**
      * Calculates and returns the number of possible moves for the specified player on the game board.
@@ -74,8 +100,27 @@ public class Event implements ActionListener {
      * @return The number of possible moves for the specified player.
      */
     private byte getNumberOfPosibleMove(byte player){
-        domineeringSearch=DomineeringSearch.getInstance(buttons);
-        return domineeringSearch.getNumbreOfMoveByPlayer(player);
+        byte nbrPossibleMove = 0;
+        if (buttons != null) {
+            if (player == 1) {
+                for (byte i = 0; i < buttons.length; i++) {
+                    for (byte j = 0; j < buttons[0].length - 1; j++) {
+                        if (Objects.equals(buttons[i][j].getBackgroundColor(), defaultColor) && Objects.equals(buttons[i][j + 1].getBackgroundColor(), defaultColor)) {
+                            nbrPossibleMove += 1;
+                        }
+                    }
+                }
+            } else if (player == 2) {
+                for (byte i = 0; i < buttons.length - 1; i++) {
+                    for (byte j = 0; j < buttons[0].length; j++) {
+                        if (Objects.equals(buttons[i][j].getBackgroundColor(), defaultColor) && Objects.equals(buttons[i + 1][j].getBackgroundColor(), defaultColor)) {
+                            nbrPossibleMove += 1;
+                        }
+                    }
+                }
+            }
+        }
+        return nbrPossibleMove;
     }
     private byte playerWin(){
         if(this.getNumberOfPosibleMove((byte)1)==0 && this.getNumberOfPosibleMove((byte)2)>0){
