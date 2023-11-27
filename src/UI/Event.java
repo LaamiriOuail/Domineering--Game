@@ -59,32 +59,35 @@ public class Event implements ActionListener {
             }
         }
     }
-    public byte getNumbreOfMoveByPlayer(byte player){
-        byte nbrPossibleMove=0;
-        if(buttons!=null){
-            if(player==1){
-                for(byte i=0;i<buttons.length;i++){
-                    for(byte j=0;j<buttons[0].length-1;j++){
-                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player1Color) && Objects.equals(buttons[i][j+1].getBackgroundColor(), player1Color)){
-                            nbrPossibleMove+=1;
-                            j++;
+    private byte getNumbreOfMoveByPlayer(byte player) {
+        byte numberOfPossibleMoves = 0;
+
+        if (buttons != null) {
+            if (player == 1) {
+                for (byte i = 0; i < buttons.length; i++) {
+                    for (byte j = 0; j < buttons[0].length - 1; j++) {
+                        if (Objects.equals(buttons[i][j].getBackgroundColor(), player1Color) && Objects.equals(buttons[i][j + 1].getBackgroundColor(), player1Color)) {
+                            numberOfPossibleMoves += 1;
                         }
                     }
                 }
-            }else if(player==2){
-                for(byte i=0;i<buttons.length-1;i++){
-                    for(byte j=0;j<buttons[0].length;j++){
-                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player2Color) && Objects.equals(buttons[i+1][j].getBackgroundColor(), player2Color)){
-                            nbrPossibleMove+=1;
-                            j++;
+            } else if (player == 2) {
+                for (byte i = 0; i < buttons.length - 1; i++) {
+                    for (byte j = 0; j < buttons[0].length; j++) {
+                        if (Objects.equals(buttons[i][j].getBackgroundColor(), player2Color)
+                                && Objects.equals(buttons[i + 1][j].getBackgroundColor(), player2Color)) {
+                            numberOfPossibleMoves += 1;
+                            i++;
                         }
                     }
                 }
             }
         }
-        return nbrPossibleMove;
+
+        return numberOfPossibleMoves;
     }
-    public byte getCurrentPlayer(){
+
+    private byte getCurrentPlayer(){
         if(this.getNumbreOfMoveByPlayer((byte)1)==this.getNumbreOfMoveByPlayer((byte)2)){
             return (byte)1;
         }else if(this.getNumbreOfMoveByPlayer((byte)1)>this.getNumbreOfMoveByPlayer((byte)2)){

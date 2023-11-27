@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * The StringTableFile class represents a utility class for managing string table data
@@ -83,37 +84,45 @@ public class StringTableFile {
     }
     public ArrayList<Sauvgard> uploadSauvgardeFromFile() {
         String formattedDateTime = "";
-        String title ="";
-        ArrayList<Sauvgard> groupeSauvgarde=new ArrayList<>();
-        String[][] backgroundColorss = new String[8][7];
-        try (BufferedReader reader = new BufferedReader(new FileReader(this.fileSauvgarde))) {
-            String line;
-            int row = 0;
-            while ((line = reader.readLine()) != null && row < backgroundColorss.length) {
-                String[] colors = line.split(",");
-                if(colors.length==2){
-                    formattedDateTime=colors[0];
-                    title=colors[1];
-                    row=0;
-                }else{
+        String title = "";
+        ArrayList<Sauvgard> groupeSauvgarde = new ArrayList<>();
+        String[][] backgroundColorss = new String[7][8];
+        int ligne=0;
+        try {
+            // Create a Scanner to read from the file
+            Scanner scanner = new Scanner(new File(fileSauvgarde));
+            // Read and print each line from the file
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                // Process the line as needed (e.g., split and extract values)
+                if (line.contains(",")) {
+                    String[] values = line.split(",");
 
-                    for (byte col = 0; col < colors.length && col < backgroundColorss[row].length; col++) {
-                        backgroundColorss[row][col] = colors[col];
+                    if(values.length==2){
+                        formattedDateTime=values[0];
+                        title=values[1];
+                        ligne=0;
+                    }else if(values.length==8){
+                        for(int column=0;column<8;column++){
+                            backgroundColorss[ligne][column]=values[column];
+                        }
+                        ligne++;
                     }
-                    row++;
-                    if(row==7){
-                        groupeSauvgarde.add(new Sauvgard(backgroundColorss,title,formattedDateTime));
+                    if(ligne==7){
+                        groupeSauvgarde.add(new Sauvgard(backgroundColors,title,formattedDateTime));
                     }
                 }
-
             }
-            //}
-            return groupeSauvgarde;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            // Close the scanner
+            scanner.close();
+
+        } catch (FileNotFoundException e) {
+            // Handle file not found exception
+            System.err.println("File not found: " + fileSauvgarde);
         }
+        return groupeSauvgarde;
     }
+
 
     /**
      * Saves a default set of background colors to the specified file.

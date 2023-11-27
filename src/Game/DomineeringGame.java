@@ -246,11 +246,9 @@ public class DomineeringGame {
                                 DomineeringGame.this.finalizeSauvgardedFrame();
                                 Sauvgard svg = sauvgards.get(id - 1);
                                 DomineeringGame.this.makeOneToOneFrame();
-                                for (byte i = 0; i < svg.getBackgroundColors().length; i++) {
-                                    for (byte j = 0; j < svg.getBackgroundColors()[0].length; j++) {
-                                        if(svg.getBackgroundColors()[i][j]!=null){
-                                            DomineeringGame.this.buttons[i][j].setBackgroundColor(svg.getBackgroundColors()[i][j]);
-                                        }
+                                for(byte i=0;i<buttons.length;i++){
+                                    for(byte j=0;j<buttons[0].length;j++){
+                                        DomineeringGame.this.buttons[i][j].setBackgroundColor(svg.getBackgroundColors()[i][j]);
                                     }
                                 }
                             }
@@ -300,6 +298,7 @@ public class DomineeringGame {
                                 player=event.getPlayer();
                             }
                             */
+                        DomineeringGame.this.file.loadBackgroundColorFromFile(buttons);
                         DomineeringGame.this.file.saveSauvgardeToFile(buttons,DomineeringGame.this.inputTitle.getText());
                         if(DomineeringGame.this.labelMessage!=null){
                             labelMessage.setText("Game sauvgarded successufully");
