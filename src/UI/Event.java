@@ -164,6 +164,7 @@ public class Event implements ActionListener {
                 labelMessage.toVisible(false);
             }
         }
+        Position.setRowColumn(buttons.length,buttons[0].length);
         file=StringTableFile.getInstance(buttons);
         player=this.getCurrentPlayer();
         System.out.println("----------------------------------------");

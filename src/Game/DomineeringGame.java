@@ -53,18 +53,23 @@ public class DomineeringGame {
     private Button[][] buttons=null;
     private int row;
     private int column;
+    private int windowHeight;
+    private int windowWidth;
     private Event event=null;
     private static DomineeringGame domineeringGameInstance=null;
     //endregion
     //region Constructeur
     private DomineeringGame(int row , int column) {
-        this.window = Window.getInstance(600, 600, "Domineering", "", true);
-        this.makeMainFrame();
-        this.window.Show();
         this.row=row;
         this.column=column;
         this.event=new Event();
         this.buttons=new Button[this.row][this.column];
+        this.windowHeight=(row-1)*58+57+200;
+        this.windowWidth=(column-1)*68+67+60;
+        this.window = Window.getInstance(windowWidth, windowHeight, "Domineering", "", true);
+        this.makeMainFrame();
+        this.window.Show();
+
     }
     public static DomineeringGame getInstance(int row , int column ){
         if(domineeringGameInstance==null){
@@ -75,11 +80,12 @@ public class DomineeringGame {
     //endregion
     //region make Main Window
     private void makeMainFrame() {
-        this.mainFrame = window.addFrame(0, 0, 600, 600, mainBgColor);
-        this.btnGameWithPerson = this.mainFrame.addButton(100, 70, 400, 100, "Play with friend", "", "Click me to play with your friend", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
-        this.btnGameWithAgent = this.mainFrame.addButton(100, 190, 400, 100, "Play Laptop", "", "Click me to play with your laptop", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
-        this.btnsauvgardedGamebtn = this.mainFrame.addButton(100, 310, 400, 100, "Sauvgarded Game", "", "Click me to exit", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
-        this.btnMainExit = this.mainFrame.addButton(100, 430, 400, 100, "Exit", "", "Click me to exit", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
+        int top=(windowHeight-460)/2;
+        this.mainFrame = window.addFrame(0, 0, windowWidth, windowHeight, mainBgColor);
+        this.btnGameWithPerson = this.mainFrame.addButton(100, top, windowWidth-200, 100, "Play with friend", "", "Click me to play with your friend", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
+        this.btnGameWithAgent = this.mainFrame.addButton(100, top+=120, windowWidth-200, 100, "Play Laptop", "", "Click me to play with your laptop", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
+        this.btnsauvgardedGamebtn = this.mainFrame.addButton(100, top+=120, windowWidth-200, 100, "Sauvgarded Game", "", "Click me to exit", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
+        this.btnMainExit = this.mainFrame.addButton(100, top+=120, windowWidth-200, 100, "Exit", "", "Click me to exit", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
         this.btnMainExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -106,8 +112,9 @@ public class DomineeringGame {
     //endregion
     //region make One to One play window
     private void makeOneToOneFrame() {
-        this.oneToOneGameFrame = window.addFrame(0, 0, 600, 600, mainBgColor);
-        this.domineeringFrame = this.oneToOneGameFrame.addFrame(30, 150, 540, 406, backgroundGame);
+        //this.oneToOneGameFrame = window.addFrame(0, 0, 600, 600, mainBgColor);
+        this.oneToOneGameFrame = window.addFrame(0, 0, windowWidth, windowHeight, mainBgColor);
+        this.domineeringFrame = this.oneToOneGameFrame.addFrame(30, 150, this.windowWidth-62, this.windowHeight-169, mainBgColor);
         this.goToMainFrameButton=this.oneToOneGameFrame.addButton(10,10, 100, 57, "Return", "", "Back to home page ", true, "#000000", "#ffffff", 20, "Arial", false, false);
         this.restartGameButton=this.oneToOneGameFrame.addButton(490,10, 100, 57, "Restart", "", "Restart game", true, "#000000", "#ffffff", 20, "Arial", false, false);        // Create a 2D array to store buttons
         this.sauvgardebtn=this.oneToOneGameFrame.addButton(350,10, 120, 57, "Sauvgarde", "", "sauvgarde game", true, "#000000", "#ffffff", 20, "Arial", false, false);        // Create a 2D array to store buttons
