@@ -69,7 +69,7 @@ public class DomineeringGame {
         this.windowWidth=(Configuration.column-1)*68+67+60;
         this.window = Window.getInstance(windowWidth, windowHeight, "Domineering", "", true);
     }
-    public static DomineeringGame getInstance(int row , int column ){
+    public static DomineeringGame getInstance( ){
         if(domineeringGameInstance==null){
             domineeringGameInstance=new DomineeringGame();
         }
@@ -78,17 +78,28 @@ public class DomineeringGame {
     //endregion
     //region make Main Window
     private void makeMainFrame() {
+        short width=0;
+        short size=0;
+        short left= 0;
+        if(Configuration.column<=6){
+            width= (short) (windowWidth-100);
+            size=10;
+            left=50;
+        }else{
+            width= (short) (windowWidth-200);
+            size=20;
+            left= 100;
+        }
         short top= (short) ((windowHeight-460)/2);
-        short width= (short) (windowWidth-200);
-        short left= 100;
+
         short height=80;
         short space=15;
         this.mainFrame = window.addFrame(0, 0, windowWidth, windowHeight, Configuration.mainBgColor);
-        this.btnGameWithPerson = this.mainFrame.addButton(left, top, windowWidth-200, height, "Play with friend", "", "Click me to play with your friend", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
-        this.btnGameWithAgent = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Play Laptop", "", "Click me to play with your laptop", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
-        this.btnsauvgardedGamebtn = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Sauvgarded Game", "", "Click me to exit", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
-        this.btnSetting = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Setting", "", "Click me to go setting", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
-        this.btnMainExit = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Exit", "", "Click me to exit", true, "#0000ff", "#ffffff", 30, "Arial", true, false);
+        this.btnGameWithPerson = this.mainFrame.addButton(left, top, width, height, "Play with friend", "", "Click me to play with your friend", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
+        this.btnGameWithAgent = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Play Laptop", "", "Click me to play with your laptop", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
+        this.btnsauvgardedGamebtn = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Sauvgarded Game", "", "Click me to exit", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
+        this.btnSetting = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Setting", "", "Click me to go setting", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
+        this.btnMainExit = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Exit", "", "Click me to exit", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
         this.btnMainExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,13 +126,25 @@ public class DomineeringGame {
     //endregion
     //region make One to One play window
     private void makeOneToOneFrame() {
+        short width=0;
+        short size=0;
+        short left= 0;
+        if(Configuration.column<6){
+            width= 70;
+            size=16;
+            left=50;
+        }else{
+            width= 100;
+            size=20;
+            left= 100;
+        }
         //this.oneToOneGameFrame = window.addFrame(0, 0, 600, 600, mainBgColor);
         this.oneToOneGameFrame = window.addFrame(0, 0, windowWidth, windowHeight, Configuration.mainBgColor);
         this.domineeringFrame = this.oneToOneGameFrame.addFrame(30, 150, this.windowWidth-62, this.windowHeight-169, Configuration.mainBgColor);
-        this.goToMainFrameButton=this.oneToOneGameFrame.addButton(10,10, 100, 57, "Return", "", "Back to home page ", true, "#000000", "#ffffff", 20, "Arial", false, false);
-        this.restartGameButton=this.oneToOneGameFrame.addButton(windowWidth-110,10, 100, 57, "Restart", "", "Restart game", true, "#000000", "#ffffff", 20, "Arial", false, false);        // Create a 2D array to store buttons
-        this.sauvgardebtn=this.oneToOneGameFrame.addButton(windowWidth-250,10, 120, 57, "Sauvgarde", "", "sauvgarde game", true, "#000000", "#ffffff", 20, "Arial", false, false);        // Create a 2D array to store buttons
-        this.labelMessage=this.oneToOneGameFrame.addLabel(30,80,windowWidth-60,60,"","","",true,false, Configuration.mainBgColor,"#ffffff",24,"Arial",false,true);
+        this.goToMainFrameButton=this.oneToOneGameFrame.addButton(10,10, width, 57, "Return", "", "Back to home page ", true, "#000000", "#ffffff", size, "Arial", false, false);
+        this.restartGameButton=this.oneToOneGameFrame.addButton(windowWidth-110,10, width, 57, "Restart", "", "Restart game", true, "#000000", "#ffffff", size, "Arial", false, false);        // Create a 2D array to store buttons
+        this.sauvgardebtn=this.oneToOneGameFrame.addButton(windowWidth-250,10, width+10, 57, "Sauvgarde", "", "sauvgarde game", true, "#000000", "#ffffff", size, "Arial", false, false);        // Create a 2D array to store buttons
+        this.labelMessage=this.oneToOneGameFrame.addLabel(30,80,windowWidth-60,60,"","","",true,false, Configuration.mainBgColor,"#ffffff",size+4,"Arial",false,true);
         this.labelMessage.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < Configuration.row; i++) {
             for (int j = 0; j < Configuration.column; j++) {
@@ -173,7 +196,7 @@ public class DomineeringGame {
         this.sauvgardebtn=null;
         this.labelMessage=null;
     }
-    private void finalizeSauvgardedFrame(){
+    public void finalizeSauvgardedFrame(){
         this.SauvgardedTableFrame=null;
         this.SauvgardedFrame=null;
         this.goToMainFrameButton=null;
@@ -278,11 +301,11 @@ public class DomineeringGame {
                     DomineeringGame.this.labelMessage.toVisible(false);
                 }
             }
-            DomineeringGame.this.sauvgardeFrame=DomineeringGame.this.oneToOneGameFrame.addFrame(30,100,540,50, Configuration.mainBgColor);
-            DomineeringGame.this.inputTitle=DomineeringGame.this.sauvgardeFrame.addInput(80,10,200,30,"","","","#ffffff",18,"#000000",false,false,true);
-            DomineeringGame.this.submitSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(300,10, 100, 30, "Submit", "", "Sauvgarder game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
-            DomineeringGame.this.refuseSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(410,10, 100, 30, "refuse", "", "refuse sauvgarde game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
-            DomineeringGame.this.labelInputSauvgarde=DomineeringGame.this.sauvgardeFrame.addLabel(10,10,80,30,"Description :","","",true,true,"#ffffff", Configuration.mainBgColor,22,"",true,false);
+            DomineeringGame.this.sauvgardeFrame=DomineeringGame.this.oneToOneGameFrame.addFrame(30,100,this.windowWidth-62,50, Configuration.mainBgColor);
+            DomineeringGame.this.inputTitle=DomineeringGame.this.sauvgardeFrame.addInput(140,10,windowWidth-430,30,"","","","#ffffff",21,"#000000",false,false,true);
+            DomineeringGame.this.submitSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(windowWidth-280,10, 100, 30, "Submit", "", "Sauvgarder game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
+            DomineeringGame.this.refuseSauvgarde=DomineeringGame.this.sauvgardeFrame.addButton(windowWidth-170,10, 100, 30, "refuse", "", "refuse sauvgarde game", true, "#000000", "#ffffff", 18, "Arial", false, false);        //
+            DomineeringGame.this.labelInputSauvgarde=DomineeringGame.this.sauvgardeFrame.addLabel(10,10,130,30,"Description :","","",true,true,"#ffffff", Configuration.mainBgColor,14,"",true,false);
             DomineeringGame.this.oneToOneGameFrame.Show();
             DomineeringGame.this.refuseSauvgarde.addActionListener(new ActionListener() {
                 @Override

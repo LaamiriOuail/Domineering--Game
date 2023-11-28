@@ -1,7 +1,7 @@
 package Helper;
 
 public class Configuration {
-    public static int row=10;
+    public static int row=7;
     public static int column=8;
     public static String player1Color="#800080";
     public static String player2Color="#000000";

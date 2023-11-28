@@ -1,5 +1,6 @@
 package UI;
 
+import Game.DomineeringGame;
 import Helper.Configuration;
 import Helper.Move;
 import Helper.Position;
@@ -159,6 +160,7 @@ public class Event implements ActionListener {
             if (!Objects.equals(labelMessage.getText(), "")) {
                 labelMessage.setText("");
                 labelMessage.toVisible(false);
+                DomineeringGame.getInstance().finalizeSauvgardedFrame();
             }
         }
         Position.setRowColumn(buttons.length,buttons[0].length);
