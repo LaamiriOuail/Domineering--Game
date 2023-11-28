@@ -118,7 +118,11 @@ public class Frame extends JPanel {
         this.add(input);
         return input;
     }
-
+    public ComboBox addComboBox(int left, int top, int width, int height,Integer[] items,boolean visible){
+        ComboBox combobox=new ComboBox(left,top,width,height,items,visible);
+        this.add(combobox);
+        return combobox;
+    }
     /**
      * Shows the Frame, making it visible on the screen.
      */
