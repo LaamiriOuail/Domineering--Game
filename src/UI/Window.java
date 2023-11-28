@@ -39,7 +39,23 @@ public class Window extends JFrame {
         this.setResizable(!fixed);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
+    private void setAttribute(int width, int height, String title, String icon, boolean fixed) {
+        this.setVisible(false);
+        this.setTitle(title);
+        // Set Icon
+        File iconFile = new File(icon);
+        if (iconFile.exists()) {
+            //extension images
+            ImageIcon iconImage = new ImageIcon(icon);
+            this.setIconImage(iconImage.getImage());
+        }
+        this.setSize(width, height);
+        this.setLocationRelativeTo(null);
+        this.setLayout(null);
+        this.setResizable(!fixed);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
+    }
     /**
      * Get or create the singleton instance of the Window.
      *
@@ -53,6 +69,8 @@ public class Window extends JFrame {
     public static Window getInstance(int width, int height, String title, String icon, boolean fixed) {
         if (instance == null) {
             instance = new Window(width, height, title, icon, fixed);
+        }else{
+            instance.setAttribute(width, height, title, icon, fixed);
         }
         return instance;
     }

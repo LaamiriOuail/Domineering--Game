@@ -1,5 +1,6 @@
 package UI;
 
+import Helper.Configuration;
 import Helper.Move;
 import Helper.Position;
 import Helper.StringTableFile;
@@ -16,11 +17,7 @@ import java.util.Objects;
  */
 public class Event implements ActionListener {
     private StringTableFile file;
-    private final String filename="data.txt";
-    final String player1Color="#800080";
-    final String player2Color="#000000";
-    final String intermediateColor="#F5F5DC";
-    final String defaultColor="#ffffff";
+
     List<Position> listOfValidPosition=null;
     private Label labelMessage=null;
     private byte player=1;
@@ -69,7 +66,7 @@ public class Event implements ActionListener {
                 for(byte i=0;i<buttons.length;i++){
                     for(byte j=0;j<buttons[0].length-1;j++){
                         exist=false;
-                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player1Color) && Objects.equals(buttons[i][j+1].getBackgroundColor(), player1Color)){
+                        if(Objects.equals(buttons[i][j].getBackgroundColor(), Configuration.player1Color) && Objects.equals(buttons[i][j+1].getBackgroundColor(), Configuration.player1Color)){
                             for(byte k=0;k<groupMove.size();k++){
                                 if(groupMove.get(k).hasPosition(new Position(i,j)) || groupMove.get(k).hasPosition(new Position(i,j+1))){
                                     exist=true;
@@ -86,7 +83,7 @@ public class Event implements ActionListener {
                 for(byte i=0;i<buttons.length-1;i++){
                     for(byte j=0;j<buttons[0].length;j++){
                         exist=false;
-                        if(Objects.equals(buttons[i][j].getBackgroundColor(), player2Color) && Objects.equals(buttons[i+1][j].getBackgroundColor(), player2Color)){
+                        if(Objects.equals(buttons[i][j].getBackgroundColor(), Configuration.player2Color) && Objects.equals(buttons[i+1][j].getBackgroundColor(), Configuration.player2Color)){
                             for(byte k=0;k<groupMove.size();k++){
                                 if(groupMove.get(k).hasPosition(new Position(i,j)) || groupMove.get(k).hasPosition(new Position(i+1,j))){
                                     exist=true;
@@ -125,7 +122,7 @@ public class Event implements ActionListener {
             if (player == 1) {
                 for (byte i = 0; i < buttons.length; i++) {
                     for (byte j = 0; j < buttons[0].length - 1; j++) {
-                        if (Objects.equals(buttons[i][j].getBackgroundColor(), defaultColor) && Objects.equals(buttons[i][j + 1].getBackgroundColor(), defaultColor)) {
+                        if (Objects.equals(buttons[i][j].getBackgroundColor(), Configuration.defaultColor) && Objects.equals(buttons[i][j + 1].getBackgroundColor(), Configuration.defaultColor)) {
                             nbrPossibleMove += 1;
                         }
                     }
@@ -133,7 +130,7 @@ public class Event implements ActionListener {
             } else if (player == 2) {
                 for (byte i = 0; i < buttons.length - 1; i++) {
                     for (byte j = 0; j < buttons[0].length; j++) {
-                        if (Objects.equals(buttons[i][j].getBackgroundColor(), defaultColor) && Objects.equals(buttons[i + 1][j].getBackgroundColor(), defaultColor)) {
+                        if (Objects.equals(buttons[i][j].getBackgroundColor(), Configuration.defaultColor) && Objects.equals(buttons[i + 1][j].getBackgroundColor(), Configuration.defaultColor)) {
                             nbrPossibleMove += 1;
                         }
                     }
@@ -167,42 +164,36 @@ public class Event implements ActionListener {
         Position.setRowColumn(buttons.length,buttons[0].length);
         file=StringTableFile.getInstance(buttons);
         player=this.getCurrentPlayer();
-        System.out.println("----------------------------------------");
-        System.out.println("player 1 : "+getNumbreOfMoveByPlayer((byte)1));
-        System.out.println("player 2 : "+getNumbreOfMoveByPlayer((byte)2));
-        System.out.println("----------------------------------------");
-        System.out.println("player  : "+player);
-        System.out.println("----------------------------------------");
         Button sourceButton = (Button) e.getSource();
         if(player!=machine){
-            if(Objects.equals(sourceButton.getBackgroundColor(), defaultColor) || Objects.equals(sourceButton.getBackgroundColor(), intermediateColor)){
+            if(Objects.equals(sourceButton.getBackgroundColor(), Configuration.defaultColor) || Objects.equals(sourceButton.getBackgroundColor(), Configuration.intermediateColor)){
                 String tooltip=sourceButton.getToolTipText();
                 String[] pos=tooltip.split(",");
                 int ligne=Integer.parseInt(pos[0]);
                 int column=Integer.parseInt(pos[1]);
                 Position position=new Position(ligne,column);
                 if(move==0){
-                    this.listOfValidPosition=position.getPossibleMove(player,this.buttons,this.defaultColor);
+                    this.listOfValidPosition=position.getPossibleMove(player,this.buttons,Configuration.defaultColor);
                     if(listOfValidPosition.size()==1) {
                         if(player==1){
-                            sourceButton.setBackgroundColor(player1Color);
-                            this.buttons[listOfValidPosition.get(0).getX()][listOfValidPosition.get(0).getY()].setBackgroundColor(player1Color);
+                            sourceButton.setBackgroundColor(Configuration.player1Color);
+                            this.buttons[listOfValidPosition.get(0).getX()][listOfValidPosition.get(0).getY()].setBackgroundColor(Configuration.player1Color);
                             player=2;
                         }else if(player==2){
-                            sourceButton.setBackgroundColor(player2Color);
-                            this.buttons[listOfValidPosition.get(0).getX()][listOfValidPosition.get(0).getY()].setBackgroundColor(player2Color);
+                            sourceButton.setBackgroundColor(Configuration.player2Color);
+                            this.buttons[listOfValidPosition.get(0).getX()][listOfValidPosition.get(0).getY()].setBackgroundColor(Configuration.player2Color);
                             player=1;
                         }
                         file.setBackgroundColors(buttons);
                         file.saveBackgroundColorToFile();
                     }else if(listOfValidPosition.size()==2){
                         for (var positioni:listOfValidPosition) {
-                            this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(intermediateColor);
+                            this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(Configuration.intermediateColor);
                         }
                         if(player==1){
-                            sourceButton.setBackgroundColor(player1Color);
+                            sourceButton.setBackgroundColor(Configuration.player1Color);
                         }else if(player==2){
-                            sourceButton.setBackgroundColor(player2Color);
+                            sourceButton.setBackgroundColor(Configuration.player2Color);
                         }
                         move=1;
                     }
@@ -210,13 +201,13 @@ public class Event implements ActionListener {
                 }else if(move==1 && position.isIn(listOfValidPosition)){
                     move=0;
                     for (var positioni:listOfValidPosition) {
-                        this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(defaultColor);
+                        this.buttons[positioni.getX()][positioni.getY()].setBackgroundColor(Configuration.defaultColor);
                     }
                     if(player==1){
-                        sourceButton.setBackgroundColor(player1Color);
+                        sourceButton.setBackgroundColor(Configuration.player1Color);
                         player=2;
                     }else if(player==2){
-                        sourceButton.setBackgroundColor(player2Color);
+                        sourceButton.setBackgroundColor(Configuration.player2Color);
                         player=1;
                     }
                     file.setBackgroundColors(buttons);
