@@ -64,7 +64,7 @@ public class DomineeringGame {
         this.row=row;
         this.column=column;
         this.event=new Event();
-        this.buttons=new Button[this.column][this.row];
+        this.buttons=new Button[this.row][this.column];
     }
     public static DomineeringGame getInstance(int row , int column ){
         if(domineeringGameInstance==null){
@@ -113,8 +113,8 @@ public class DomineeringGame {
         this.sauvgardebtn=this.oneToOneGameFrame.addButton(350,10, 120, 57, "Sauvgarde", "", "sauvgarde game", true, "#000000", "#ffffff", 20, "Arial", false, false);        // Create a 2D array to store buttons
         this.labelMessage=this.oneToOneGameFrame.addLabel(30,80,540,60,"","","",true,false,mainBgColor,"#ffffff",24,"Arial",false,true);
         this.labelMessage.setHorizontalAlignment(SwingConstants.CENTER);
-        for (int i = 0; i < column; i++) {
-            for (int j = 0; j < row; j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
                 this.buttons[i][j] = this.domineeringFrame.addButton(j * 68, i * 58, 67, 57, "", "", i + "," + j, true, "#ffffff", defaultColor, 0, "Arial", false, false);
                 this.buttons[i][j].addActionListener(event);
             }
@@ -169,8 +169,8 @@ public class DomineeringGame {
         this.goToMainFrameButton=null;
     }
     private void restart(){
-            for (int i = 0; i < column; i++) {
-                for (int j = 0; j < row; j++) {
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < column; j++) {
                     this.buttons[i][j].setBackgroundColor(defaultColor);
                     this.buttons[i][j].toEnabled(true);
                 }
