@@ -129,11 +129,21 @@ public class DomineeringGame {
                 DomineeringGame.this.window.Close();
             }
         });
+        this.btnGameWithAgent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DomineeringGame.this.mainFrame.Close();
+                DomineeringGame.this.makeGameFrame();
+                Configuration.machine=1;
+                DomineeringGame.this.finalizeMainFrame();
+            }
+        });
         this.btnGameWithPerson.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DomineeringGame.this.mainFrame.Close();
                 DomineeringGame.this.makeGameFrame();
+                Configuration.machine=0;
                 DomineeringGame.this.finalizeMainFrame();
             }
         });
@@ -311,6 +321,7 @@ public class DomineeringGame {
                                 Sauvgard svg = sauvgards.get(id - 1);
                                 Configuration.row= (short) svg.getBackgroundColors().length;
                                 Configuration.column= (short) svg.getBackgroundColors()[0].length;
+                                Configuration.machine=svg.getMachine();
                                 DomineeringGame.this.setAttribute();
                                 DomineeringGame.this.makeGameFrame();
                                 for(byte i=0;i<Configuration.buttons.length;i++){
@@ -378,7 +389,7 @@ public class DomineeringGame {
                             DomineeringGame.this.labelInputSauvgarde.setColor("#ff0000");
                         }
                         DomineeringGame.this.oneToOneGameFrame.Show();
-                        ArrayList<Sauvgard> sauvgards=file.uploadSauvgardeFromFile();
+                        //ArrayList<Sauvgard> sauvgards=file.uploadSauvgardeFromFile();
                     }
                 });
             }

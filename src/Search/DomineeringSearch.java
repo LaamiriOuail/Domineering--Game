@@ -6,38 +6,32 @@ import UI.Button;
 import java.util.Objects;
 
 public class DomineeringSearch implements GameSearch {
-    private Button buttons[][]=null;
     private static DomineeringSearch domineeringSearchInstance=null;
-    public void setButtons(Button[][] buttons) {
-        this.buttons = buttons;
-    }
+    private DomineeringSearch() {
 
-    private DomineeringSearch(Button[][] buttons) {
-        this.buttons = buttons;
     }
-    public static DomineeringSearch getInstance(Button[][] buttons){
+    public static DomineeringSearch getInstance(){
         if(domineeringSearchInstance==null){
-            domineeringSearchInstance=new DomineeringSearch(buttons);
+            domineeringSearchInstance=new DomineeringSearch();
         }else{
-            domineeringSearchInstance.setButtons(buttons);
         }
         return domineeringSearchInstance;
     }
     public byte getNumberOfPosibleMove(byte player) {
         byte nbrPossibleMove = 0;
-        if (buttons != null) {
+        if (Configuration.buttons != null) {
             if (player == 1) {
-                for (byte i = 0; i < buttons.length; i++) {
-                    for (byte j = 0; j < buttons[0].length - 1; j++) {
-                        if (Objects.equals(buttons[i][j].getBackgroundColor(), Configuration.defaultColor) && Objects.equals(buttons[i][j + 1].getBackgroundColor(), Configuration.defaultColor)) {
+                for (byte i = 0; i < Configuration.buttons.length; i++) {
+                    for (byte j = 0; j < Configuration.buttons[0].length - 1; j++) {
+                        if (Objects.equals(Configuration.buttons[i][j].getBackgroundColor(), Configuration.defaultColor) && Objects.equals(Configuration.buttons[i][j + 1].getBackgroundColor(), Configuration.defaultColor)) {
                             nbrPossibleMove += 1;
                         }
                     }
                 }
             } else if (player == 2) {
-                for (byte i = 0; i < buttons.length - 1; i++) {
-                    for (byte j = 0; j < buttons[0].length; j++) {
-                        if (Objects.equals(buttons[i][j].getBackgroundColor(), Configuration.defaultColor) && Objects.equals(buttons[i + 1][j].getBackgroundColor(), Configuration.defaultColor)) {
+                for (byte i = 0; i < Configuration.buttons.length - 1; i++) {
+                    for (byte j = 0; j < Configuration.buttons[0].length; j++) {
+                        if (Objects.equals(Configuration.buttons[i][j].getBackgroundColor(), Configuration.defaultColor) && Objects.equals(Configuration.buttons[i + 1][j].getBackgroundColor(), Configuration.defaultColor)) {
                             nbrPossibleMove += 1;
                         }
                     }
@@ -48,20 +42,20 @@ public class DomineeringSearch implements GameSearch {
     }
     public byte getNumbreOfMoveByPlayer(byte player){
         byte nbrPossibleMove=0;
-        if(buttons!=null){
+        if(Configuration.buttons!=null){
             if(player==1){
-                for(byte i=0;i<buttons.length;i++){
-                    for(byte j=0;j<buttons[0].length-1;j++){
-                        if(Objects.equals(buttons[i][j].getBackgroundColor(), Configuration.player1Color) && Objects.equals(buttons[i][j+1].getBackgroundColor(), Configuration.player1Color)){
+                for(byte i=0;i<Configuration.buttons.length;i++){
+                    for(byte j=0;j<Configuration.buttons[0].length-1;j++){
+                        if(Objects.equals(Configuration.buttons[i][j].getBackgroundColor(), Configuration.player1Color) && Objects.equals(Configuration.buttons[i][j+1].getBackgroundColor(), Configuration.player1Color)){
                             nbrPossibleMove+=1;
                             j++;
                         }
                     }
                 }
             }else if(player==2){
-                for(byte i=0;i<buttons.length-1;i++){
-                    for(byte j=0;j<buttons[0].length;j++){
-                        if(Objects.equals(buttons[i][j].getBackgroundColor(), Configuration.player2Color) && Objects.equals(buttons[i+1][j].getBackgroundColor(), Configuration.player2Color)){
+                for(byte i=0;i<Configuration.buttons.length-1;i++){
+                    for(byte j=0;j<Configuration.buttons[0].length;j++){
+                        if(Objects.equals(Configuration.buttons[i][j].getBackgroundColor(), Configuration.player2Color) && Objects.equals(Configuration.buttons[i+1][j].getBackgroundColor(), Configuration.player2Color)){
                             nbrPossibleMove+=1;
                             j++;
                         }

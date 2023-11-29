@@ -7,9 +7,15 @@ public class Sauvgard {
     String title;
     String formattedDateTime;
 
-    public Sauvgard(String[][] backgroundColors,String title, String formattedDateTime) {
+    public byte getMachine() {
+        return machine;
+    }
+
+    byte machine;
+    public Sauvgard(String[][] backgroundColors,String title, String formattedDateTime,byte machine) {
         this.backgroundColors = new String[backgroundColors.length][backgroundColors[0].length];
         this.title = title;
+        this.machine=machine;
         this.formattedDateTime = formattedDateTime;
         for(int i=0;i< backgroundColors.length;i++){
             for(int j=0;j< backgroundColors[0].length;j++) {

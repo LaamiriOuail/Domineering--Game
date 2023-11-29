@@ -1,6 +1,7 @@
 package Helper;
 
 
+import java.awt.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -85,6 +86,7 @@ public class StringTableFile {
         int ligne=0;
         int row=0;
         int column=0;
+        byte machine=0;
         try {
             // Create a Scanner to read from the file
             Scanner scanner = new Scanner(new File(Configuration.fileSauvgarde));
@@ -95,11 +97,12 @@ public class StringTableFile {
                 if (line.contains(",")) {
                     String[] values = line.split(",");
 
-                    if(values.length==4){
+                    if(values.length==5){
                         formattedDateTime=values[0];
                         title=values[1];
                         row= Integer.parseInt(values[2]);
                         column= Integer.parseInt(values[3]);
+                        machine=Byte.parseByte(values[4]);
                         backgroundColorss = new String[row][column];
                         ligne=0;
                     }else {
@@ -109,7 +112,7 @@ public class StringTableFile {
                         ligne++;
                     }
                     if(ligne==row){
-                        groupeSauvgarde.add(new Sauvgard(backgroundColorss,title,formattedDateTime));
+                        groupeSauvgarde.add(new Sauvgard(backgroundColorss,title,formattedDateTime,machine));
                     }
                 }
             }
