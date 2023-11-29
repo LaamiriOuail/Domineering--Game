@@ -1,5 +1,7 @@
 package Helper;
 
+import UI.Button;
+
 public class Configuration {
     public static short row=7;
     public static short column=7;
@@ -12,4 +14,7 @@ public class Configuration {
     public static  String fileSauvgarde="./Data/sauvgarde.txt";
     public static  String fileConfiguration="./Data/configuarations.txt";
     public static String machineColor="#000000";
+    public static Button[][] buttons=null;
+    public static byte player=1;
+    public static byte machine=0;
 }

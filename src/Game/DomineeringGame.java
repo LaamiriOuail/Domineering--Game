@@ -49,7 +49,7 @@ public class DomineeringGame {
     private Label labelMessage=null;
     private Frame SauvgardedFrame=null;
     private Frame SauvgardedTableFrame=null;
-    private Button[][] buttons=null;
+    //private Button[][] buttons=null;
     private Frame changeSizeGameFrame=null;
     private int windowHeight;
     private int windowWidth;
@@ -59,7 +59,7 @@ public class DomineeringGame {
     //region Constructeur
     private DomineeringGame() {
         this.event=new Event();
-        this.buttons=new Button[Configuration.row][Configuration.column];
+        Configuration.buttons=new Button[Configuration.row][Configuration.column];
         this.windowHeight=(Configuration.row-1)*58+57+200;
         this.windowWidth=(Configuration.column-1)*68+67+60;
         this.window = Window.getInstance(windowWidth, windowHeight, "Domineering", "", true);
@@ -71,7 +71,7 @@ public class DomineeringGame {
     }
     private void setAttribute() {
         this.event=new Event();
-        this.buttons=new Button[Configuration.row][Configuration.column];
+        Configuration.buttons=new Button[Configuration.row][Configuration.column];
         this.windowHeight=(Configuration.row-1)*58+57+200;
         this.windowWidth=(Configuration.column-1)*68+67+60;
         this.window = Window.getInstance(windowWidth, windowHeight, "Domineering", "", true);
@@ -84,7 +84,7 @@ public class DomineeringGame {
     }
     //endregion
     private void loadConfigurations(){
-        file=StringTableFile.getInstance(buttons);
+        file=StringTableFile.getInstance();
         String[] configurations=file.loadConfigurations();
         if(configurations!=null){
             if(configurations.length==8){
@@ -133,7 +133,7 @@ public class DomineeringGame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DomineeringGame.this.mainFrame.Close();
-                DomineeringGame.this.makeOneToOneFrame();
+                DomineeringGame.this.makeGameFrame();
                 DomineeringGame.this.finalizeMainFrame();
             }
         });
@@ -156,7 +156,7 @@ public class DomineeringGame {
     }
     //endregion
     //region make One to One play window
-    private void makeOneToOneFrame() {
+    private void makeGameFrame() {
         short width=0;
         short size=0;
         if(Configuration.column<6){
@@ -182,12 +182,12 @@ public class DomineeringGame {
         this.labelMessage.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < Configuration.row; i++) {
             for (int j = 0; j < Configuration.column; j++) {
-                this.buttons[i][j] = this.domineeringFrame.addButton(j * 68, i * 58, 67, 57, "", "", i + "," + j, true, "#ffffff", Configuration.defaultColor, 0, "Arial", false, false);
-                this.buttons[i][j].addActionListener(event);
+                Configuration.buttons[i][j] = this.domineeringFrame.addButton(j * 68, i * 58, 67, 57, "", "", i + "," + j, true, "#ffffff", Configuration.defaultColor, 0, "Arial", false, false);
+                Configuration.buttons[i][j].addActionListener(event);
             }
         }
         event.setLabelMessage(this.labelMessage);
-        event.setButtons(this.buttons);
+        //event.setButtons();
         //file=StringTableFile.getInstance(buttons);
         //file.loadBackgroundColorFromFile(buttons);
 
@@ -238,14 +238,14 @@ public class DomineeringGame {
     private void restart(){
             for (int i = 0; i < Configuration.row; i++) {
                 for (int j = 0; j < Configuration.column; j++) {
-                    this.buttons[i][j].setBackgroundColor(Configuration.defaultColor);
-                    this.buttons[i][j].toEnabled(true);
+                    Configuration.buttons[i][j].setBackgroundColor(Configuration.defaultColor);
+                    Configuration.buttons[i][j].toEnabled(true);
                 }
             }
             event.setMove((byte)0);
             this.labelMessage.toVisible(false);
             this.labelMessage.setText("");
-            file=StringTableFile.getInstance(buttons);
+            file=StringTableFile.getInstance();
             file.saveVoidColors();
     }
     private void makeSauvgardedFrame(){
@@ -262,7 +262,7 @@ public class DomineeringGame {
         });
     }
     private void makeSauvgardedTable(){
-        file=StringTableFile.getInstance(buttons);
+        file=StringTableFile.getInstance();
         ArrayList<Sauvgard> sauvgards=file.uploadSauvgardeFromFile();
         this.SauvgardedTableFrame=this.SauvgardedFrame.addFrame(10, 115, windowWidth-20, 30*sauvgards.size()+30, Configuration.mainBgColor);
         this.SauvgardedTableFrame.setLayout(new BorderLayout());
@@ -312,10 +312,10 @@ public class DomineeringGame {
                                 Configuration.row= (short) svg.getBackgroundColors().length;
                                 Configuration.column= (short) svg.getBackgroundColors()[0].length;
                                 DomineeringGame.this.setAttribute();
-                                DomineeringGame.this.makeOneToOneFrame();
-                                for(byte i=0;i<buttons.length;i++){
-                                    for(byte j=0;j<buttons[0].length;j++){
-                                        DomineeringGame.this.buttons[i][j].setBackgroundColor(svg.getBackgroundColors()[i][j]);
+                                DomineeringGame.this.makeGameFrame();
+                                for(byte i=0;i<Configuration.buttons.length;i++){
+                                    for(byte j=0;j<Configuration.buttons[0].length;j++){
+                                        Configuration.buttons[i][j].setBackgroundColor(svg.getBackgroundColors()[i][j]);
                                     }
                                 }
                             }
@@ -356,7 +356,7 @@ public class DomineeringGame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         DomineeringGame.this.oneToOneGameFrame.Close();
-                        DomineeringGame.this.file=StringTableFile.getInstance(buttons);
+                        DomineeringGame.this.file=StringTableFile.getInstance();
                         if(!Objects.equals(DomineeringGame.this.inputTitle.getText(), "")){
                             /*
                             if(event.getMove()==1){
@@ -366,8 +366,8 @@ public class DomineeringGame {
                                 player=event.getPlayer();
                             }
                             */
-                            DomineeringGame.this.file.loadBackgroundColorFromFile(buttons);
-                            DomineeringGame.this.file.saveSauvgardeToFile(buttons,DomineeringGame.this.inputTitle.getText(),Configuration.row,Configuration.column);
+                            DomineeringGame.this.file.loadBackgroundColorFromFile();
+                            DomineeringGame.this.file.saveSauvgardeToFile(DomineeringGame.this.inputTitle.getText(),Configuration.row,Configuration.column,Configuration.machine);
                             if(DomineeringGame.this.labelMessage!=null){
                                 labelMessage.setText("Game sauvgarded successufully");
                                 labelMessage.toVisible(true);

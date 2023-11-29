@@ -1,7 +1,5 @@
 package Helper;
 
-import Game.DomineeringGame;
-import UI.Button;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -22,51 +20,48 @@ public class StringTableFile {
      * Private constructor to create a new instance of StringTableFile.
      * Initializes the background colors based on the provided buttons.
      *
-     * @param buttons The 2D array of UI buttons.
      */
-    private StringTableFile(Button[][] buttons){
-       this.setBackgroundColors(buttons);
+    private StringTableFile(){
+       this.setBackgroundColors();
     }
     /**
      * Retrieves a singleton instance of the StringTableFile class.
      * If an instance does not exist, a new one is created based on the provided buttons.
      *
-     * @param buttons The 2D array of UI buttons.
      * @return The singleton instance of StringTableFile.
      */
-    public static  StringTableFile getInstance(Button[][] buttons){
+    public static  StringTableFile getInstance(){
         if(instance==null){
-            instance=new StringTableFile(buttons);
+            instance=new StringTableFile();
         }
         return  instance;
     }
     /**
      * Sets the background colors based on the provided UI buttons.
      *
-     * @param buttons The 2D array of UI buttons.
      */
-    public void setBackgroundColors(Button[][] buttons){
-        if(buttons!=null){
-            backgroundColors=new String[buttons.length][buttons[0].length];
+    public void setBackgroundColors(){
+        if(Configuration.buttons!=null){
+            backgroundColors=new String[Configuration.buttons.length][Configuration.buttons[0].length];
             for (byte i = 0; i < backgroundColors.length; i++) {
                 for (byte j = 0; j < backgroundColors[0].length; j++) {
-                    if(buttons[i][j]!=null)
-                        backgroundColors[i][j]=buttons[i][j].getBackgroundColor();
+                    if(Configuration.buttons[i][j]!=null)
+                        backgroundColors[i][j]=Configuration.buttons[i][j].getBackgroundColor();
                 }
             }
         }
     }
-    public void saveSauvgardeToFile(Button[][] buttons,String title,int row,int column){
+    public void saveSauvgardeToFile(String title,int row,int column,int machine){
         //if(move==1) player is player-1 or player +1
         try (PrintWriter writer = new PrintWriter(new FileWriter(Configuration.fileSauvgarde, true))) {
-            this.setBackgroundColors(buttons);
+            this.setBackgroundColors();
             // Get the current date and time
             LocalDateTime now = LocalDateTime.now();
             // Define the desired date and time format
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             // Format the current date and time using the formatter
             String formattedDateTime = now.format(formatter);
-            writer.println(formattedDateTime+","+title+","+row+","+column);
+            writer.println(formattedDateTime+","+title+","+row+","+column+","+machine);
             for (int i = 0; i < row; i++) {
                 for (byte j = 0; j < column; j++) {
                     writer.print(backgroundColors[i][j]);
@@ -79,7 +74,7 @@ public class StringTableFile {
             }
             writer.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
     public ArrayList<Sauvgard> uploadSauvgardeFromFile() {
@@ -169,24 +164,23 @@ public class StringTableFile {
     /**
      * Loads background colors from the specified file and updates the UI buttons accordingly.
      *
-     * @param buttons  The 2D array of UI buttons to update.
      */
-    public void loadBackgroundColorFromFile(Button[][] buttons) {
+    public void loadBackgroundColorFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(Configuration.fileColors))) {
             String line;
             int row = 0;
-            while ((line = reader.readLine()) != null && row < buttons.length) {
+            while ((line = reader.readLine()) != null && row < Configuration.buttons.length) {
                 String[] colors = line.split(",");
-                for (byte col = 0; col < colors.length && col < buttons[row].length; col++) {
+                for (byte col = 0; col < colors.length && col < Configuration.buttons[row].length; col++) {
                     backgroundColors[row][col] = colors[col];
                 }
                 row++;
             }
 
             //DomineeringGame domineeringGame=DomineeringGame.getInstance()
-            for(byte i=0;i<buttons.length;i++){
-                for(byte j=0;j<buttons[0].length;j++){
-                    buttons[i][j].setBackgroundColor(backgroundColors[i][j]);
+            for(byte i=0;i<Configuration.buttons.length;i++){
+                for(byte j=0;j<Configuration.buttons[0].length;j++){
+                    Configuration.buttons[i][j].setBackgroundColor(backgroundColors[i][j]);
                 }
             }
         } catch (IOException e) {

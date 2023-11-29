@@ -13,8 +13,6 @@ import java.util.Objects;
 public class Position {
     private int X;
     private int Y;
-    static int row;
-    static int column;
 
     /**
      * Constructs a new Position object with the specified X and Y coordinates.
@@ -26,17 +24,13 @@ public class Position {
         this.X = x;
         this.Y = y;
     }
-    public static  void setRowColumn(int row,int column){
-        Position.row=row;
-        Position.column=column;
-    }
     /**
      * Checks if the current position is valid on the game board.
      *
      * @return True if the position is valid, false otherwise.
      */
     public boolean isValid() {
-        return this.X >= 0 && this.X < row && this.Y >= 0 && this.Y < column;
+        return this.X >= 0 && this.X < Configuration.row && this.Y >= 0 && this.Y < Configuration.column;
     }
 
     /**
