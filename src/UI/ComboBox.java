@@ -3,14 +3,11 @@ package UI;
 import javax.swing.*;
 import java.util.Vector;
 
-public class ComboBox extends JComboBox<Integer> {
-    public ComboBox(int left, int top, int width, int height,Integer[] items,boolean visible) {
+public class ComboBox<T> extends JComboBox<T> {
+    public ComboBox(int left, int top, int width, int height,T[] items,boolean visible) {
         super(items);
         this.setVisible(visible);
         this.resize(left,top,width,height);
-    }
-    public Integer getSelectedValue() {
-        return (Integer) this.getSelectedItem();
     }
     /**
      * Resizes the Label to the specified dimensions.

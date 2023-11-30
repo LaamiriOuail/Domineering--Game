@@ -4,7 +4,6 @@ import Helper.Board;
 import Helper.Configuration;
 import Helper.Move;
 import Helper.Position;
-import UI.Button;
 
 import java.util.ArrayList;
 import java.util.List;

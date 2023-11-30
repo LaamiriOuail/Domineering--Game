@@ -3,7 +3,6 @@ package Game;
 import Helper.Configuration;
 import Helper.Sauvgard;
 import Helper.StringTableFile;
-import UI.*;
 import UI.Button;
 import UI.Event;
 import UI.Frame;
@@ -48,9 +47,27 @@ public class DomineeringGame {
     private Frame SauvgardedFrame=null;
     private Frame SauvgardedTableFrame=null;
     private Frame changeSizeGameFrame=null;
+    private Label labelRow=null;
+    private TextField inputRow=null;
+    private Label labelColumn=null;
+    private TextField inputColumn=null;
+    private Label labelBoardColor=null;
+    private TextField inputBoardColor=null;
+    private Label labelPlayer1Color=null;
+    private TextField inputPlayer1Color=null;
+    private Label labelPlayer2Color=null;
+    private TextField inputPlayer2Color=null;
+    private Label labelIntermediateColor=null;
+    private TextField inputIntermediateColor=null;
+    private Label labelAppBackgroundColor=null;
+    private TextField inputAppBackgroundColor=null;
+    private Button saveSetting=null;
+    private Button rejectSaveSetting=null;
+
     private int windowHeight;
     private int windowWidth;
     private Event event=null;
+
     private static DomineeringGame domineeringGameInstance=null;
     //endregion
     //region Constructeur
@@ -90,9 +107,8 @@ public class DomineeringGame {
                 Configuration.defaultColor = configurations[2];
                 Configuration.player1Color = configurations[3];
                 Configuration.player2Color = configurations[4];
-                Configuration.machineColor = configurations[5];
-                Configuration.intermediateColor = configurations[6];
-                Configuration.machineColor = configurations[7];
+                Configuration.intermediateColor = configurations[5];
+                Configuration.machineColor = configurations[6];
             }
         }
     }
@@ -368,7 +384,6 @@ public class DomineeringGame {
                     }
                 });
                 DomineeringGame.this.submitSauvgarde.addActionListener(new ActionListener() {
-
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         DomineeringGame.this.oneToOneGameFrame.Close();
@@ -409,11 +424,40 @@ public class DomineeringGame {
 
     }
     private void makeSettingFrame(){
-        this.settingFrame = window.addFrame(0, 0, windowWidth, windowHeight, Configuration.mainBgColor);
-        this.updateSettingFRame=this.settingFrame.addFrame(30,30,windowWidth-60,windowHeight-60,Configuration.mainBgColor);
-        this.goToMainFrameButton=this.settingFrame.addButton(10,10, 100, 57, "Return", "", "Back to home page ", true, "#000000", "#ffffff", 20, "Arial", false, false);
-        Label labelRow=this.updateSettingFRame.addLabel(10,30,100,40,"Row","","",true,true,"#fffff","",16,"Arial",false,false);
+        short width=0;
+        short size=0;
+        short left= 0;
+        if(Configuration.column<=6){
+            width= (short) (windowWidth-100);
+            size=10;
+            left=50;
+        }else{
+            width= (short) (windowWidth-200);
+            size=20;
+            left= 100;
+        }
+        short top= (short) ((windowHeight-460)/2);
+        short height=80;
+        short space=15;
 
+        this.settingFrame = window.addFrame(0, 0, windowWidth, windowHeight, Configuration.mainBgColor);
+        this.goToMainFrameButton=this.settingFrame.addButton(10,10, 100, 47, "Return", "", "Back to home page ", true, "#000000", "#ffffff", 22, "Arial", false, false);
+        this.labelRow=this.settingFrame.addLabel(30,100,100,30,"Row : ","","",true,true,"#ffffff","",18,"Arial",true,false);
+        this.inputRow=this.settingFrame.addInput(280,100,200,30,""+Configuration.row,"","#000000","",28,"Arial",true,true,true);
+        this.labelColumn=this.settingFrame.addLabel(30,150,100,30,"Column : ","","",true,true,"#ffffff","",18,"Arial",true,false);
+        this.inputColumn=this.settingFrame.addInput(280,150,200,30,""+Configuration.column,"","#000000","",22,"Arial",true,true,true);
+        this.labelBoardColor=this.settingFrame.addLabel(30,200,180,30,"Board color : ","","",true,true,"#ffffff","",18,"Arial",true,false);
+        this.inputBoardColor=this.settingFrame.addInput(280,200,200,30,Configuration.defaultColor,"","#000000","",22,"Arial",true,true,true);
+        this.labelPlayer1Color=this.settingFrame.addLabel(30,250,180,30,"PLayer 1 color : ","","",true,true,"#ffffff","",18,"Arial",true,false);
+        this.inputPlayer1Color=this.settingFrame.addInput(280,250,200,30,Configuration.player1Color,"","#000000","",22,"Arial",true,true,true);
+        this.labelPlayer2Color=this.settingFrame.addLabel(30,300,180,30,"PLayer 2 color : ","","",true,true,"#ffffff","",18,"Arial",true,false);
+        this.inputPlayer2Color=this.settingFrame.addInput(280,300,200,30,Configuration.player2Color,"","#000000","",22,"Arial",true,true,true);
+        this.labelIntermediateColor=this.settingFrame.addLabel(30,350,290,30,"Intermediate color : ","","",true,true,"#ffffff","",18,"Arial",true,false);
+        this.inputIntermediateColor=this.settingFrame.addInput(280,350,200,30,Configuration.intermediateColor,"","#000000","",22,"Arial",true,true,true);
+        this.labelAppBackgroundColor=this.settingFrame.addLabel(30,400,290,30,"App background color : ","","",true,true,"#ffffff","",18,"Arial",true,false);
+        this.inputAppBackgroundColor=this.settingFrame.addInput(280,400,200,30,Configuration.mainBgColor,"","#000000","",22,"Arial",true,true,true);
+        this.saveSetting=this.settingFrame.addButton(100,450,150,30,"Submit","","Submit change",true,Configuration.mainBgColor,"#ffffff",22,"Arial",false,false);
+        this.rejectSaveSetting=this.settingFrame.addButton(300,450,150,30,"Reject","","Reject change",true,Configuration.mainBgColor,"#ffffff",22,"Arial",false,false);
         this.goToMainFrameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

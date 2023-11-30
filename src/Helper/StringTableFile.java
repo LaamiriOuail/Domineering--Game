@@ -189,9 +189,9 @@ public class StringTableFile {
             e.printStackTrace();
         }
     }
-    public void saveConfiguarations(short row,short column,String defaultBoardColor,String player1Color,String player2Color,String machineColor,String secondPossibleMoveColor,String backgroundAppColor) {
+    public void saveConfiguarations(short row,short column,String defaultBoardColor,String player1Color,String player2Color,String secondPossibleMoveColor,String backgroundAppColor) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(Configuration.fileConfiguration))) {
-            writer.println(row+","+column+","+defaultBoardColor+","+player1Color+","+player2Color+","+machineColor+","+secondPossibleMoveColor+","+backgroundAppColor); // Move to the next line for the next row
+            writer.println(row+","+column+","+defaultBoardColor+","+player1Color+","+player2Color+","+secondPossibleMoveColor+","+backgroundAppColor); // Move to the next line for the next row
         } catch (IOException e) {
             e.printStackTrace();
         }
