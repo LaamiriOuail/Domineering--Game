@@ -1,3 +1,18 @@
+/**
+ * The DomineeringGame class represents the main game controller for the Domineering game.
+ * It handles the main game window, settings, saved games, and the game logic.
+ *
+ * This class uses the Singleton design pattern to ensure only one instance of the game is created.
+ *
+ * The game window includes options to play with a friend, play against the computer, view saved games,
+ * and access game settings. The game logic includes handling moves, restarting games, and saving games.
+ *
+ * The settings include configurations for the game board, colors, and overall appearance.
+ *
+ * @author Laamiri Ouail & Sadik Hajar
+ * @version 1.0
+ * @since 2023-12-01
+ */
 package Game;
 
 import Helper.Configuration;
@@ -62,7 +77,6 @@ public class DomineeringGame {
     private Label labelAppBackgroundColor=null;
     private TextField inputAppBackgroundColor=null;
     private Button saveSetting=null;
-    private Button rejectSaveSetting=null;
 
     private int windowHeight;
     private int windowWidth;
@@ -73,6 +87,7 @@ public class DomineeringGame {
     //region Constructeur
     private DomineeringGame() {
         this.event=new Event();
+        this.loadConfigurations();
         Configuration.buttons=new Button[Configuration.row][Configuration.column];
         this.windowHeight=(Configuration.row-1)*58+57+200;
         this.windowWidth=(Configuration.column-1)*68+67+60;
@@ -84,6 +99,7 @@ public class DomineeringGame {
 
     }
     private void setAttribute() {
+        this.window.setVisible(false);
         this.event=new Event();
         Configuration.buttons=new Button[Configuration.row][Configuration.column];
         this.windowHeight=(Configuration.row-1)*58+57+200;
@@ -101,14 +117,14 @@ public class DomineeringGame {
         Configuration.file=StringTableFile.getInstance();
         String[] configurations=Configuration.file.loadConfigurations();
         if(configurations!=null){
-            if(configurations.length==8){
+            if(configurations.length==7){
                 Configuration.row = Short.parseShort(configurations[0]);
                 Configuration.column = Short.parseShort(configurations[1]);
                 Configuration.defaultColor = configurations[2];
                 Configuration.player1Color = configurations[3];
                 Configuration.player2Color = configurations[4];
                 Configuration.intermediateColor = configurations[5];
-                Configuration.machineColor = configurations[6];
+                Configuration.mainBgColor = configurations[6];
             }
         }
     }
@@ -420,9 +436,6 @@ public class DomineeringGame {
         }
 
     }
-    private void makeChangeSizeGameFrame(){
-
-    }
     private void makeSettingFrame(){
         short width=0;
         short size=0;
@@ -456,8 +469,8 @@ public class DomineeringGame {
         this.inputIntermediateColor=this.settingFrame.addInput(280,350,200,30,Configuration.intermediateColor,"","#000000","",22,"Arial",true,true,true);
         this.labelAppBackgroundColor=this.settingFrame.addLabel(30,400,290,30,"App background color : ","","",true,true,"#ffffff","",18,"Arial",true,false);
         this.inputAppBackgroundColor=this.settingFrame.addInput(280,400,200,30,Configuration.mainBgColor,"","#000000","",22,"Arial",true,true,true);
-        this.saveSetting=this.settingFrame.addButton(100,450,150,30,"Submit","","Submit change",true,Configuration.mainBgColor,"#ffffff",22,"Arial",false,false);
-        this.rejectSaveSetting=this.settingFrame.addButton(300,450,150,30,"Reject","","Reject change",true,Configuration.mainBgColor,"#ffffff",22,"Arial",false,false);
+        this.saveSetting=this.settingFrame.addButton(160,470,150,30,"Submit","","Submit change",true,Configuration.mainBgColor,"#ffffff",22,"Arial",false,false);
+        Configuration.labelMessage=this.settingFrame.addLabel(30,510,200,30,"","","",true,false,Configuration.mainBgColor,"#ffffff",18,"Arial",true,false);
         this.goToMainFrameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -466,10 +479,79 @@ public class DomineeringGame {
                 DomineeringGame.this.makeMainFrame();
             }
         });
+        this.saveSetting.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DomineeringGame.this.saveSettings();
+                DomineeringGame.this.settingFrame.Close();
+                DomineeringGame.this.finalizeSettingFrame();
+                DomineeringGame.this.makeMainFrame();
+            }
+        });
+    }
+    private void saveSettings() {
+        try{
+            // Get the values from the input fields
+            short newRow = Short.parseShort(inputRow.getText());
+            short newColumn = Short.parseShort(inputColumn.getText());
+            String newBoardColor = inputBoardColor.getText();
+            String newPlayer1Color = inputPlayer1Color.getText();
+            String newPlayer2Color = inputPlayer2Color.getText();
+            String newIntermediateColor = inputIntermediateColor.getText();
+            String newAppBackgroundColor = inputAppBackgroundColor.getText();
+
+            // Update the Configuration class with the new values
+            if(newRow>5){
+                Configuration.row = newRow;
+            }
+            if(newColumn>5){
+                Configuration.column = newColumn;
+            }
+            domineeringGameInstance.setAttribute();
+            if(Configuration.isColor(newBoardColor)){
+                Configuration.defaultColor = newBoardColor;
+            }
+            if(Configuration.isColor(newPlayer1Color)){
+                Configuration.player1Color = newPlayer1Color;
+            }
+            if(Configuration.isColor(newPlayer2Color)){
+                Configuration.player2Color = newPlayer2Color;
+            }
+            if(Configuration.isColor(newIntermediateColor)){
+                Configuration.intermediateColor = newIntermediateColor;
+            }
+            if(Configuration.isColor(newAppBackgroundColor)){
+                Configuration.mainBgColor = newAppBackgroundColor;
+            }
+            // Perform any additional actions you need with the updated settings
+            // Close the setting frame and transition to the main framen
+            Configuration.file.saveConfigurations(Configuration.row,Configuration.column,Configuration.defaultColor,Configuration.player1Color, Configuration.player2Color,Configuration.intermediateColor,Configuration.mainBgColor);
+        }catch (Exception e){
+            Configuration.labelMessage.setVisible(true);
+            Configuration.labelMessage.setText("The information is not correct");
+        }
+
     }
     private void finalizeSettingFrame(){
-        this.settingFrame=null;
+        this.settingFrame =null;
         this.goToMainFrameButton=null;
+        this.labelRow=null;
+        this.inputRow=null;
+        this.labelColumn=null;
+        this.inputColumn=null;
+        this.labelBoardColor=null;
+        this.inputBoardColor=null;
+        this.labelPlayer1Color=null;
+        this.inputPlayer1Color=null;
+        this.labelPlayer2Color=null;
+        this.inputPlayer2Color=null;
+        this.labelIntermediateColor=null;
+        this.inputIntermediateColor=null;
+        this.labelAppBackgroundColor=null;
+        this.inputAppBackgroundColor=null;
+        this.saveSetting=null;
+        Configuration.labelMessage=null;
+
     }
     @Override
     protected void finalize() throws Throwable {

@@ -6,6 +6,9 @@ import java.io.File;
 
 /**
  * A custom JTextField with additional features for setting text, tooltip, color, background color, font, and editability.
+ * @author Laamiri Ouail & Sadik Hajar
+ * @version 1.0
+ * @since 2023-12-01
  */
 public class TextField extends JTextField {
 

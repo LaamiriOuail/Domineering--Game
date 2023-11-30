@@ -9,6 +9,9 @@ import java.util.Objects;
  * The Position class represents a position on a game board with X and Y coordinates.
  * It provides methods to check the validity of the position, get possible moves for a player,
  * and access the X and Y coordinates.
+ * @author Laamiri Ouail & Sadik Hajar
+ * @version 1.0
+ * @since 2023-12-01
  */
 public class Position {
     private int X;
@@ -24,6 +27,7 @@ public class Position {
         this.X = x;
         this.Y = y;
     }
+
     /**
      * Checks if the current position is valid on the game board.
      *
@@ -42,13 +46,13 @@ public class Position {
      * @param defaultColor The default background color to check against when determining valid moves.
      * @return A list of Position objects representing possible moves.
      */
-    public List<Position> getPossibleMove(byte player, Button[][] btns,String defaultColor) {
+    public List<Position> getPossibleMove(byte player, Button[][] btns, String defaultColor) {
         // One: left, right                 // Two: top, bottom
         List<Position> list = new ArrayList<>();
         Position pos = null;
         if (player == 2) {
             pos = new Position(this.X - 1, Y);
-            if (pos.isValid() )
+            if (pos.isValid())
                 list.add(pos);
 
             pos = new Position(this.X + 1, Y);
@@ -84,23 +88,24 @@ public class Position {
     public int getY() {
         return Y;
     }
+
     /**
      * Checks if the current position is present in the given list of positions.
      *
      * @param positions A list of Position objects to check against.
      * @return True if the position is in the list, false otherwise.
      */
-    public boolean isIn(List<Position> positions){
-        boolean exist=false;
-        for (var position:positions) {
-            if(position.getY()==this.Y && position.getX()==this.X){
-                exist=true;
+    public boolean isIn(List<Position> positions) {
+        boolean exist = false;
+        for (var position : positions) {
+            if (position.getY() == this.Y && position.getX() == this.X) {
+                exist = true;
                 break;
             }
-
         }
         return exist;
     }
+
     /**
      * Returns a string representation of the Position object.
      *

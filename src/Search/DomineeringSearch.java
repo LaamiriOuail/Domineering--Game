@@ -10,10 +10,19 @@ import java.util.List;
 import java.util.Objects;
 
 public class DomineeringSearch implements GameSearch {
+    // Singleton instance
     private static DomineeringSearch domineeringSearchInstance=null;
+    /**
+     * Private constructor for Singleton pattern.
+     */
     private DomineeringSearch() {
 
     }
+    /**
+     * Get the instance of DomineeringSearch using the Singleton pattern.
+     *
+     * @return The DomineeringSearch instance.
+     */
     public static DomineeringSearch getInstance(){
         if(domineeringSearchInstance==null){
             domineeringSearchInstance=new DomineeringSearch();
@@ -21,10 +30,18 @@ public class DomineeringSearch implements GameSearch {
         }
         return domineeringSearchInstance;
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public byte getNumbreOfMoveByPlayer(byte player){
 
         return (byte) this.getValidMovesi(player).size();
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Move> getValidMovesi(byte player){
         List<Move> groupMove=new ArrayList<>();
         if(Configuration.buttons!=null){
@@ -67,6 +84,10 @@ public class DomineeringSearch implements GameSearch {
         }
         return groupMove;
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<int[]> getValidMoves(String[][] state,byte player) {
         List<int[]> validMoves = new ArrayList<>();
         if (Configuration.buttons != null) {
@@ -90,6 +111,10 @@ public class DomineeringSearch implements GameSearch {
         }
         return validMoves;
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Board> getValideStates(byte player){
         List<Move> groupMove=new ArrayList<>();
         List<Board> groupBords=new ArrayList<>();
@@ -143,6 +168,10 @@ public class DomineeringSearch implements GameSearch {
         }
         return groupBords;
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public byte getNextPlayer(){
         if(this.getNumbreOfMoveByPlayer((byte)1)==this.getNumbreOfMoveByPlayer((byte)2)){
             return (byte)1;
@@ -152,6 +181,10 @@ public class DomineeringSearch implements GameSearch {
             return (byte)1;
         }
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public byte getNumberOfPosibleMove(byte player){
         byte nbrPossibleMove = 0;
         if (Configuration.buttons != null) {
@@ -175,6 +208,10 @@ public class DomineeringSearch implements GameSearch {
         }
         return nbrPossibleMove;
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public byte playerWin(){
         if(this.getNumberOfPosibleMove((byte)1)==0 && this.getNumberOfPosibleMove((byte)2)>0){
             return 2;
@@ -187,6 +224,10 @@ public class DomineeringSearch implements GameSearch {
             return 0;
         }
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void makeMove(int x, int y, byte player) {
         if (player == 1) {
             Configuration.buttons[x][y].setBackgroundColor(Configuration.player1Color);
@@ -196,6 +237,10 @@ public class DomineeringSearch implements GameSearch {
             Configuration.buttons[x+1][y].setBackgroundColor(Configuration.player2Color);
         }
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void makeHelpMove(int x, int y, byte player) {
         if (player == 1) {
             Configuration.buttons[x][y].setBackgroundColor(Configuration.intermediateColor);
@@ -207,6 +252,10 @@ public class DomineeringSearch implements GameSearch {
             Configuration.helpMove=new Move(new Position(x,y),new Position(x+1,y),Configuration.player);
         }
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean playHelpMove(int x, int y) {
         Position position=new Position(x,y);
         if (!position.isValid()) {
@@ -216,6 +265,10 @@ public class DomineeringSearch implements GameSearch {
         this.makeHelpMove(x,y,this.getNextPlayer());
         return true;
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean playMove(int x, int y) {
         Position position=new Position(x,y);
         if (!position.isValid()) {
@@ -225,6 +278,10 @@ public class DomineeringSearch implements GameSearch {
         this.makeMove(x,y,this.getNextPlayer());
         return true;
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int heuristic(int[] move) {
         int safeMovesC = 0;
         int safeMovesH = 0;
@@ -261,6 +318,10 @@ public class DomineeringSearch implements GameSearch {
 
         return (horizontal - vertical) + safeMovesH * Configuration.safeMovesCoef + Configuration.column * (Configuration.row - 1) + Configuration.row * (Configuration.column - 1);
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int[] maxValue(String[][] state, int depth, int alpha, int beta, int[] move) {
         List<int[]> nextStates = getValidMoves(state, this.getNextPlayer());
         if (depth == 0 || nextStates.isEmpty()) {
@@ -280,6 +341,10 @@ public class DomineeringSearch implements GameSearch {
             return new int[]{alpha, move[0], move[1]};
         }
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int[] minValue(String[][] state, int depth, int alpha, int beta, int[] move) {
         List<int[]> nextStates = getValidMoves(state, this.getNextPlayer());
         if (depth == 0 || nextStates.isEmpty()) {
@@ -295,6 +360,10 @@ public class DomineeringSearch implements GameSearch {
             return new int[]{beta, move[0], move[1]};
         }
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int[] minmax(String[][] state, int depth, boolean myMove, int[] alpha, int[] beta) {
         int[] move = myMove ? maxValue(state, depth, alpha[0], beta[0], new int[]{0, 0, 0}) :
                 minValue(state, depth, alpha[0], beta[0], new int[]{0, 0, 0});

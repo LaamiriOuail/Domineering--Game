@@ -12,12 +12,25 @@ import java.util.Objects;
 /**
  * The Event class implements the ActionListener interface and handles button click events
  * for a user interface associated with the "Domineering" game.
+ * @author Laamiri Ouail & Sadik Hajar
+ * @version 1.0
+ * @since 2023-12-01
  */
 public class Event implements ActionListener {
     List<Position> listOfValidPosition=null;
+    /**
+     * Sets the label message for the UI.
+     *
+     * @param labelMessage The label message to be set.
+     */
     public void setLabelMessage(Label labelMessage){
         Configuration.labelMessage=labelMessage;
     }
+    /**
+     * Enables or disables all buttons in the UI.
+     *
+     * @param enable True to enable, false to disable.
+     */
     public void toEnableBtns(boolean enable){
         if(Configuration.buttons!=null){
             for (int i = 0; i < Configuration.buttons.length; i++) {
@@ -27,6 +40,11 @@ public class Event implements ActionListener {
             }
         }
     }
+    /**
+     * Makes a move in the game based on the button clicked.
+     *
+     * @param sourceButton The button that was clicked.
+     */
     public void makeMove(Button sourceButton){
         if(Objects.equals(sourceButton.getBackgroundColor(), Configuration.defaultColor) || Objects.equals(sourceButton.getBackgroundColor(), Configuration.intermediateColor)){
             String tooltip=sourceButton.getToolTipText();

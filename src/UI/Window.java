@@ -11,6 +11,9 @@ import javax.swing.*;
 import java.io.File;
 /**
  * A custom JFrame for creating a window with additional features, such as setting the title, icon, size, and layout.
+ * @author Laamiri Ouail & Sadik Hajar
+ * @version 1.0
+ * @since 2023-12-01
  */
 public class Window extends JFrame {
     private static Window instance;
