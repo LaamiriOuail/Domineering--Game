@@ -1,5 +1,6 @@
 package Helper;
 
+import Search.DomineeringSearch;
 import UI.Button;
 
 public abstract class Configuration {
@@ -17,7 +18,24 @@ public abstract class Configuration {
     public static Button[][] buttons=null;
     public static byte player=1;
     public static byte machine=0;
+    public static byte move=0;
 
+    public static int asymPercentFloor = 62;
+    public static int asymPercentCeil = 63;
+    public static int asymMove;
+    public static int safeMovesCoef = 10;
+    public static Position intermediatePosition=null;
+
+    public static void setMove(byte move) {
+        Configuration.move = move;
+    }
+
+
+    public static DomineeringSearch domineeringSearch=DomineeringSearch.getInstance();
+    public static StringTableFile file=StringTableFile.getInstance();
+    public static void setIntermediatePosition(Position intermediatePosition) {
+        Configuration.intermediatePosition = intermediatePosition;
+    }
     public static void setRow(short row) {
         Configuration.row = row;
     }

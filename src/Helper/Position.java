@@ -30,7 +30,7 @@ public class Position {
      * @return True if the position is valid, false otherwise.
      */
     public boolean isValid() {
-        return this.X >= 0 && this.X < Configuration.row && this.Y >= 0 && this.Y < Configuration.column;
+        return this.X >= 0 && this.X < Configuration.row && this.Y >= 0 && this.Y < Configuration.column && Objects.equals(Configuration.buttons[this.X][this.Y].getBackgroundColor(), Configuration.defaultColor);
     }
 
     /**
@@ -48,19 +48,19 @@ public class Position {
         Position pos = null;
         if (player == 2) {
             pos = new Position(this.X - 1, Y);
-            if (pos.isValid() && Objects.equals(btns[pos.getX()][pos.getY()].getBackgroundColor(), defaultColor))
+            if (pos.isValid() )
                 list.add(pos);
 
             pos = new Position(this.X + 1, Y);
-            if (pos.isValid() && Objects.equals(btns[pos.getX()][pos.getY()].getBackgroundColor(), defaultColor))
+            if (pos.isValid())
                 list.add(pos);
         } else if (player == 1) {
             pos = new Position(this.X, Y - 1);
-            if (pos.isValid() && Objects.equals(btns[pos.getX()][pos.getY()].getBackgroundColor(), defaultColor))
+            if (pos.isValid())
                 list.add(pos);
 
             pos = new Position(this.X, Y + 1);
-            if (pos.isValid() && Objects.equals(btns[pos.getX()][pos.getY()].getBackgroundColor(), defaultColor))
+            if (pos.isValid())
                 list.add(pos);
         }
 

@@ -1,7 +1,5 @@
 package Helper;
 
-
-import java.awt.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -169,6 +167,7 @@ public class StringTableFile {
      *
      */
     public void loadBackgroundColorFromFile() {
+        setBackgroundColors();
         try (BufferedReader reader = new BufferedReader(new FileReader(Configuration.fileColors))) {
             String line;
             int row = 0;
@@ -211,6 +210,4 @@ public class StringTableFile {
         }
         return configValues;
     }
-
-
 }

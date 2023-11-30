@@ -3,9 +3,16 @@ package Helper;
 public class Move {
     private Position position1=null;
     private Position posotion2=null;
-    public Move(Position position1,Position posotion2) {
+
+    public byte getPlayer() {
+        return player;
+    }
+
+    private byte player=0;
+    public Move(Position position1,Position posotion2,byte player) {
         this.position1=position1;
         this.posotion2=posotion2;
+        this.player=player;
     }
 
     public Position getPosition1() {
