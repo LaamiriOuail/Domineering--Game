@@ -45,10 +45,8 @@ public class DomineeringGame {
     private Button submitSauvgarde=null;
     private Button refuseSauvgarde=null;
     private Label labelInputSauvgarde=null;
-    private Label labelMessage=null;
     private Frame SauvgardedFrame=null;
     private Frame SauvgardedTableFrame=null;
-    //private Button[][] buttons=null;
     private Frame changeSizeGameFrame=null;
     private int windowHeight;
     private int windowWidth;
@@ -119,7 +117,7 @@ public class DomineeringGame {
         this.mainFrame = window.addFrame(0, 0, windowWidth, windowHeight, Configuration.mainBgColor);
         this.btnGameWithPerson = this.mainFrame.addButton(left, top, width, height, "Play with friend", "", "Click me to play with your friend", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
         this.btnGameWithAgent = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Play Laptop", "", "Click me to play with your laptop", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
-        this.btnsauvgardedGamebtn = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Sauvgarded Game", "", "Click me to exit", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
+        this.btnsauvgardedGamebtn = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Saved Games", "", "Click me to exit", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
         this.btnSetting = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Setting", "", "Click me to go setting", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
         this.btnMainExit = this.mainFrame.addButton(left, top+= (short) (height+space), width, height, "Exit", "", "Click me to exit", true, "#0000ff", "#ffffff", size+10, "Arial", true, false);
         this.btnMainExit.addActionListener(new ActionListener() {
@@ -180,26 +178,32 @@ public class DomineeringGame {
         this.domineeringFrame = this.oneToOneGameFrame.addFrame(30, 150, this.windowWidth-62, this.windowHeight-169, Configuration.mainBgColor);
         this.goToMainFrameButton=this.oneToOneGameFrame.addButton(10,10, width, 47, "Return", "", "Back to home page ", true, "#000000", "#ffffff", size, "Arial", false, false);
         this.restartGameButton=this.oneToOneGameFrame.addButton(windowWidth-110,10, width, 47, "Restart", "", "Restart game", true, "#000000", "#ffffff", size, "Arial", false, false);        // Create a 2D array to store buttons
-        this.sauvgardebtn=this.oneToOneGameFrame.addButton(windowWidth-225,10, width+10, 47, "Sauvgarde", "", "sauvgarde game", true, "#000000", "#ffffff", size, "Arial", false, false);        // Create a 2D array to store buttons
+        this.sauvgardebtn=this.oneToOneGameFrame.addButton(windowWidth-225,10, width+10, 47, "Save", "", "Save game", true, "#000000", "#ffffff", size, "Arial", false, false);        // Create a 2D array to store buttons
+        Configuration.helpBtn=this.oneToOneGameFrame.addButton(windowWidth-340,10, width+10, 47, "Help", "", "Help game", true, "#000000", "#ffffff", size, "Arial", false, false);        // Create a 2D array to store buttons
         /*if(Configuration.column<=6){
             this.btnChangeSizeGame=this.oneToOneGameFrame.addButton(10,60, width, 47, "size", "", "sauvgarde game", true, "#000000", "#ffffff", size, "Arial", false, false);        // Create a 2D array to store buttons
         }else{
             this.btnChangeSizeGame=this.oneToOneGameFrame.addButton(width+20,10, width, 47, "size", "", "sauvgarde game", true, "#000000", "#ffffff", size, "Arial", false, false);        // Create a 2D array to store buttons
         }
         */
-        this.labelMessage=this.oneToOneGameFrame.addLabel(30,80,windowWidth-60,60,"","","",true,false, Configuration.mainBgColor,"#ffffff",size+4,"Arial",false,true);
-        this.labelMessage.setHorizontalAlignment(SwingConstants.CENTER);
+        Configuration.labelMessage=this.oneToOneGameFrame.addLabel(30,80,windowWidth-60,60,"","","",true,false, Configuration.mainBgColor,"#ffffff",size+4,"Arial",false,true);
+        Configuration.labelMessage.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < Configuration.row; i++) {
             for (int j = 0; j < Configuration.column; j++) {
                 Configuration.buttons[i][j] = this.domineeringFrame.addButton(j * 68, i * 58, 67, 57, "", "", i + "," + j, true, "#ffffff", Configuration.defaultColor, 0, "Arial", false, false);
                 Configuration.buttons[i][j].addActionListener(event);
             }
         }
-        event.setLabelMessage(this.labelMessage);
+        event.setLabelMessage(Configuration.labelMessage);
         //event.setButtons();
         //file=StringTableFile.getInstance(buttons);
         //file.loadBackgroundColorFromFile(buttons);
-
+        Configuration.helpBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Configuration.helpPlayer();
+            }
+        });
         this.goToMainFrameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -207,6 +211,7 @@ public class DomineeringGame {
                 DomineeringGame.this.finalizeOneToOneFrame();
                 DomineeringGame.this.makeMainFrame();
                 Configuration.setMove((byte)0);
+                Configuration.initializeHelpPlayerParameters();
             }
         });
         this.sauvgardebtn.addActionListener(new ActionListener() {
@@ -220,6 +225,7 @@ public class DomineeringGame {
             public void actionPerformed(ActionEvent e) {
                 DomineeringGame.this.domineeringFrame.Close();
                 DomineeringGame.this.restart();
+                Configuration.initializeHelpPlayerParameters();
                 DomineeringGame.this.domineeringFrame.Show();
             }
         });
@@ -237,7 +243,7 @@ public class DomineeringGame {
         this.goToMainFrameButton=null;
         this.restartGameButton=null;
         this.sauvgardebtn=null;
-        this.labelMessage=null;
+        Configuration.labelMessage=null;
     }
     public void finalizeSauvgardedFrame(){
         this.SauvgardedTableFrame=null;
@@ -252,8 +258,8 @@ public class DomineeringGame {
                 }
             }
             Configuration.setMove((byte)0);
-            this.labelMessage.toVisible(false);
-            this.labelMessage.setText("");
+            Configuration.labelMessage.toVisible(false);
+            Configuration.labelMessage.setText("");
             Configuration.file=StringTableFile.getInstance();
             Configuration.file.saveVoidColors();
     }
@@ -340,10 +346,10 @@ public class DomineeringGame {
         if(DomineeringGame.this.oneToOneGameFrame!=null){
             if(DomineeringGame.this.sauvgardeFrame==null){
                 DomineeringGame.this.oneToOneGameFrame.Close();
-                if(DomineeringGame.this.labelMessage!=null){
-                    if (!Objects.equals(labelMessage.getText(), "")) {
-                        DomineeringGame.this.labelMessage.setText("");
-                        DomineeringGame.this.labelMessage.toVisible(false);
+                if(Configuration.labelMessage!=null){
+                    if (!Objects.equals(Configuration.labelMessage.getText(), "")) {
+                        Configuration.labelMessage.setText("");
+                        Configuration.labelMessage.toVisible(false);
                     }
                 }
                 DomineeringGame.this.sauvgardeFrame=DomineeringGame.this.oneToOneGameFrame.addFrame(30,100,this.windowWidth-62,50, Configuration.mainBgColor);
@@ -383,9 +389,9 @@ public class DomineeringGame {
                                 System.out.println("Vide");
                             }
                             Configuration.file.saveSauvgardeToFile(DomineeringGame.this.inputTitle.getText(),Configuration.row,Configuration.column,Configuration.machine);
-                            if(DomineeringGame.this.labelMessage!=null){
-                                labelMessage.setText("Game sauvgarded successufully");
-                                labelMessage.toVisible(true);
+                            if(Configuration.labelMessage!=null){
+                                Configuration.labelMessage.setText("Game sauvgarded successufully");
+                                Configuration.labelMessage.toVisible(true);
                             }
                             DomineeringGame.this.sauvgardeFrame.Close();
                             DomineeringGame.this.sauvgardeFrame=null;
@@ -393,7 +399,6 @@ public class DomineeringGame {
                             DomineeringGame.this.labelInputSauvgarde.setColor("#ff0000");
                         }
                         DomineeringGame.this.oneToOneGameFrame.Show();
-                        //ArrayList<Sauvgard> sauvgards=file.uploadSauvgardeFromFile();
                     }
                 });
             }

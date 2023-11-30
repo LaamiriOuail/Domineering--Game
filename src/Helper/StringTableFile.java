@@ -80,7 +80,7 @@ public class StringTableFile {
         String formattedDateTime = "";
         String title = "";
         ArrayList<Sauvgard> groupeSauvgarde = new ArrayList<>();
-        String[][] backgroundColorss = new String[backgroundColors.length][backgroundColors[0].length];
+        String[][] backgroundColorss = new String[Configuration.row][Configuration.column];
         int ligne=0;
         int row=0;
         int column=0;

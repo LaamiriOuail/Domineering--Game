@@ -153,12 +153,6 @@ public class DomineeringSearch implements GameSearch {
             return (byte)1;
         }
     }
-    /**
-     * Calculates and returns the number of possible moves for the specified player on the game board.
-     *
-     * @param player The player identifier (1 or 2).
-     * @return The number of possible moves for the specified player.
-     */
     public byte getNumberOfPosibleMove(byte player){
         byte nbrPossibleMove = 0;
         if (Configuration.buttons != null) {
@@ -201,7 +195,28 @@ public class DomineeringSearch implements GameSearch {
         } else if (player == 2) {
             Configuration.buttons[x][y].setBackgroundColor(Configuration.player2Color);
             Configuration.buttons[x+1][y].setBackgroundColor(Configuration.player2Color);
-        }}
+        }
+    }
+    public void makeHelpMove(int x, int y, byte player) {
+        if (player == 1) {
+            Configuration.buttons[x][y].setBackgroundColor(Configuration.intermediateColor);
+            Configuration.buttons[x][y+1].setBackgroundColor(Configuration.intermediateColor);
+            Configuration.helpMove=new Move(new Position(x,y),new Position(x,y+1),Configuration.player);
+        } else if (player == 2) {
+            Configuration.buttons[x][y].setBackgroundColor(Configuration.intermediateColor);
+            Configuration.buttons[x+1][y].setBackgroundColor(Configuration.intermediateColor);
+            Configuration.helpMove=new Move(new Position(x,y),new Position(x+1,y),Configuration.player);
+        }
+    }
+    public boolean playHelpMove(int x, int y) {
+        Position position=new Position(x,y);
+        if (!position.isValid()) {
+            System.out.println("Invalid move");
+            return false;
+        }
+        this.makeHelpMove(x,y,this.getNextPlayer());
+        return true;
+    }
     public boolean playMove(int x, int y) {
         Position position=new Position(x,y);
         if (!position.isValid()) {
@@ -266,7 +281,6 @@ public class DomineeringSearch implements GameSearch {
             return new int[]{alpha, move[0], move[1]};
         }
     }
-
     public int[] minValue(String[][] state, int depth, int alpha, int beta, int[] move) {
         List<int[]> nextStates = getValidMoves(state, this.getNextPlayer());
         if (depth == 0 || nextStates.isEmpty()) {

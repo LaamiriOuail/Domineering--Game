@@ -19,6 +19,8 @@ public interface GameSearch {
     int[] maxValue(String[][] state, int depth, int alpha, int beta, int[] move);
     int[] minValue(String[][] state, int depth, int alpha, int beta, int[] move);
     int[] minmax(String[][] state, int depth, boolean myMove, int[] alpha, int[] beta);
+    boolean playHelpMove(int x, int y);
+    void makeHelpMove(int x, int y, byte player);
 }
 
 
