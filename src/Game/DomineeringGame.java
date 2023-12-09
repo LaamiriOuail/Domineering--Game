@@ -1,18 +1,3 @@
-/**
- * The DomineeringGame class represents the main game controller for the Domineering game.
- * It handles the main game window, settings, saved games, and the game logic.
- *
- * This class uses the Singleton design pattern to ensure only one instance of the game is created.
- *
- * The game window includes options to play with a friend, play against the computer, view saved games,
- * and access game settings. The game logic includes handling moves, restarting games, and saving games.
- *
- * The settings include configurations for the game board, colors, and overall appearance.
- *
- * @author Laamiri Ouail & Sadik Hajar
- * @version 1.0
- * @since 2023-12-01
- */
 package Game;
 
 import Helper.Configuration;
@@ -36,7 +21,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Objects;
-
+/**
+ * The DomineeringGame class represents the main game controller for the Domineering game.
+ * It handles the main game window, settings, saved games, and the game logic.
+ * This class uses the Singleton design pattern to ensure only one instance of the game is created.
+ * @author Laamiri Ouail & Sadik Hajar
+ * @version 1.0
+ * @since 2023-12-01
+ */
 public class DomineeringGame {
     private Window window;
     private Frame mainFrame=null;
@@ -693,9 +685,5 @@ public class DomineeringGame {
         this.saveSetting=null;
         Configuration.labelMessage=null;
 
-    }
-    @Override
-    protected void finalize() throws Throwable {
-        this.window=null;
     }
 }
