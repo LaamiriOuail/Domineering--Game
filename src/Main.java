@@ -1,4 +1,5 @@
 import Game.DomineeringGame;
+
 /*
 * @author Laamiri Ouail & Sadik Hajar
 * @version 1.0
@@ -6,7 +7,7 @@ import Game.DomineeringGame;
 */
 public class Main {
     public static void main(String[] args) {
-        DomineeringGame domain=DomineeringGame.getInstance();
+        DomineeringGame domain= DomineeringGame.getInstance();
         // Getting the name of the instance
     }
 }

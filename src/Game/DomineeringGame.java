@@ -353,17 +353,17 @@ public class DomineeringGame {
      * This method is typically called when restarting the game after completion or when needed.
      */
     private void restart(){
-            for (int i = 0; i < Configuration.row; i++) {
-                for (int j = 0; j < Configuration.column; j++) {
-                    Configuration.buttons[i][j].setBackgroundColor(Configuration.defaultColor);
-                    Configuration.buttons[i][j].toEnabled(true);
-                }
+        for (int i = 0; i < Configuration.row; i++) {
+            for (int j = 0; j < Configuration.column; j++) {
+                Configuration.buttons[i][j].setBackgroundColor(Configuration.defaultColor);
+                Configuration.buttons[i][j].toEnabled(true);
             }
-            Configuration.setMove((byte)0);
-            Configuration.labelMessage.toVisible(false);
-            Configuration.labelMessage.setText("");
-            Configuration.file=StringTableFile.getInstance();
-            Configuration.file.saveVoidColors();
+        }
+        Configuration.setMove((byte)0);
+        Configuration.labelMessage.toVisible(false);
+        Configuration.labelMessage.setText("");
+        Configuration.file=StringTableFile.getInstance();
+        Configuration.file.saveVoidColors();
     }
     /**
      * Creates and initializes the frame for viewing saved games.
@@ -432,36 +432,36 @@ public class DomineeringGame {
         }
 
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent e) {
-                    if (!e.getValueIsAdjusting()) {
-                        int selectedRow = table.getSelectedRow();
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedRow = table.getSelectedRow();
 
-                        // Check if a row is selected
-                        if (selectedRow != -1 && selectedRow < sauvgards.size()) {
-                            int idColumnIndex = 0;  // Assuming the ID is in the first column
-                            Object selectedId = table.getValueAt(selectedRow, idColumnIndex);
+                    // Check if a row is selected
+                    if (selectedRow != -1 && selectedRow < sauvgards.size()) {
+                        int idColumnIndex = 0;  // Assuming the ID is in the first column
+                        Object selectedId = table.getValueAt(selectedRow, idColumnIndex);
 
-                            // Check if selectedId is not null and is of the expected type
-                            if (selectedId != null && selectedId instanceof Integer) {
-                                int id = (int) selectedId;
-                                DomineeringGame.this.SauvgardedFrame.Close();
-                                DomineeringGame.this.finalizeSauvgardedFrame();
-                                Sauvgard svg = sauvgards.get(id - 1);
-                                Configuration.row= (short) svg.getBackgroundColors().length;
-                                Configuration.column= (short) svg.getBackgroundColors()[0].length;
-                                Configuration.machine=svg.getMachine();
-                                DomineeringGame.this.setAttribute();
-                                DomineeringGame.this.makeGameFrame();
-                                for(byte i=0;i<Configuration.buttons.length;i++){
-                                    for(byte j=0;j<Configuration.buttons[0].length;j++){
-                                        Configuration.buttons[i][j].setBackgroundColor(svg.getBackgroundColors()[i][j]);
-                                    }
+                        // Check if selectedId is not null and is of the expected type
+                        if (selectedId != null && selectedId instanceof Integer) {
+                            int id = (int) selectedId;
+                            DomineeringGame.this.SauvgardedFrame.Close();
+                            DomineeringGame.this.finalizeSauvgardedFrame();
+                            Sauvgard svg = sauvgards.get(id - 1);
+                            Configuration.row= (short) svg.getBackgroundColors().length;
+                            Configuration.column= (short) svg.getBackgroundColors()[0].length;
+                            Configuration.machine=svg.getMachine();
+                            DomineeringGame.this.setAttribute();
+                            DomineeringGame.this.makeGameFrame();
+                            for(byte i=0;i<Configuration.buttons.length;i++){
+                                for(byte j=0;j<Configuration.buttons[0].length;j++){
+                                    Configuration.buttons[i][j].setBackgroundColor(svg.getBackgroundColors()[i][j]);
                                 }
                             }
                         }
                     }
                 }
+            }
         });
         JScrollPane scrollPane = new JScrollPane(table);
         this.SauvgardedTableFrame.add(scrollPane, BorderLayout.CENTER);
