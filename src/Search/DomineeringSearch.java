@@ -16,7 +16,9 @@ import java.util.Objects;
  * @since 2023-12-01
  */
 public class DomineeringSearch implements GameSearch {
-    // Singleton instance
+    /**
+     * Singleton instance
+     */
     private static DomineeringSearch domineeringSearchInstance=null;
     /**
      * Private constructor for Singleton pattern.

@@ -25,7 +25,7 @@ public class StringTableFile {
      * Private constructor to create a new instance of StringTableFile.
      * Initializes the background colors based on the provided buttons.
      */
-    public StringTableFile() {
+    private StringTableFile() {
         // Check and create the Data directory if it doesn't exist
         checkAndCreateDirectory("./Data");
         // Check and create files if they don't exist
@@ -39,7 +39,7 @@ public class StringTableFile {
      *
      * @param filePath The path of the file to check and create.
      */
-    public void checkAndCreateFile(String filePath) {
+    private void checkAndCreateFile(String filePath) {
         Path path = Paths.get(filePath);
 
         if (!Files.exists(path)) {
@@ -59,7 +59,7 @@ public class StringTableFile {
      *
      * @param directoryPath The path of the directory to check and create.
      */
-    public void checkAndCreateDirectory(String directoryPath) {
+    private void checkAndCreateDirectory(String directoryPath) {
         Path path = Paths.get(directoryPath);
 
         if (!Files.exists(path)) {
