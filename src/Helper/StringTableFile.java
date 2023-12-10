@@ -1,6 +1,9 @@
 package Helper;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,9 +26,54 @@ public class StringTableFile {
      * Initializes the background colors based on the provided buttons.
      */
     private StringTableFile() {
+        // Check and create the Data directory if it doesn't exist
+        checkAndCreateDirectory("./Data");
+        // Check and create files if they don't exist
+        checkAndCreateFile(Configuration.fileColors);
+        checkAndCreateFile(Configuration.fileSauvgarde);
+        checkAndCreateFile(Configuration.fileConfiguration);
         this.setBackgroundColors();
     }
+    /**
+     * Checks if the file at the specified path exists. If not, creates an empty file.
+     *
+     * @param filePath The path of the file to check and create.
+     */
+    private void checkAndCreateFile(String filePath) {
+        Path path = Paths.get(filePath);
 
+        if (!Files.exists(path)) {
+            try {
+                Files.createFile(path);
+                System.out.println("File created: " + filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle the exception according to your needs
+            }
+        } else {
+            System.out.println("File already exists: " + filePath);
+        }
+    }
+    /**
+     * Checks if the directory at the specified path exists. If not, creates the directory and any necessary parent directories.
+     *
+     * @param directoryPath The path of the directory to check and create.
+     */
+    private void checkAndCreateDirectory(String directoryPath) {
+        Path path = Paths.get(directoryPath);
+
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+                System.out.println("Directory created: " + directoryPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle the exception according to your needs
+            }
+        } else {
+            System.out.println("Directory already exists: " + directoryPath);
+        }
+    }
     /**
      * Retrieves a singleton instance of the StringTableFile class.
      * If an instance does not exist, a new one is created based on the provided buttons.
