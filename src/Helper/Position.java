@@ -9,7 +9,7 @@ import java.util.Objects;
  * The Position class represents a position on a game board with X and Y coordinates.
  * It provides methods to check the validity of the position, get possible moves for a player,
  * and access the X and Y coordinates.
- * @author Laamiri Ouail & Sadik Hajar
+ * @author Laamiri Ouail
  * @version 1.0
  * @since 2023-12-01
  */

@@ -10,7 +10,7 @@ import java.util.Scanner;
  * The StringTableFile class represents a utility class for managing string table data
  * related to the background colors of UI buttons. It provides methods to save and load
  * background colors to and from a file.
- * @author Laamiri Ouail & Sadik Hajar
+ * @author Laamiri Ouail
  * @version 1.0
  * @since 2023-12-01
  */

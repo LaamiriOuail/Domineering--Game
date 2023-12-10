@@ -2,7 +2,7 @@ package Helper;
 
 /**
  * Move class represents a move in the Domineering game, consisting of two positions and the player making the move.
- * @author Laamiri Ouail & Sadik Hajar
+ * @author Laamiri Ouail
  * @version 1.0
  * @since 2023-12-01
  */

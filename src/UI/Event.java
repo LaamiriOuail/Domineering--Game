@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * The Event class implements the ActionListener interface and handles button click events
  * for a user interface associated with the "Domineering" game.
- * @author Laamiri Ouail & Sadik Hajar
+ * @author Laamiri Ouail
  * @version 1.0
  * @since 2023-12-01
  */

@@ -1,7 +1,7 @@
 import Game.DomineeringGame;
 
 /*
-* @author Laamiri Ouail & Sadik Hajar
+* @author Laamiri Ouail
 * @version 1.0
 * @since 2023-12-01
 */

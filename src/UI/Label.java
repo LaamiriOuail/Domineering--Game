@@ -6,7 +6,7 @@ import java.io.File;
 
 /**
  * A custom JLabel with additional features for setting text, tooltip, icon, enabled state, color, background color, and font.
- * @author Laamiri Ouail & Sadik Hajar
+ * @author Laamiri Ouail
  * @version 1.0
  * @since 2023-12-01
  */

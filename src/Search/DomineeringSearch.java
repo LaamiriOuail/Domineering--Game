@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * The DomineeringSearch class implements the GameSearch interface for the Domineering game.
  * It utilizes the Singleton pattern to ensure a single instance of the class.
- * @author Laamiri Ouail & Sadik Hajar
+ * @author Laamiri Ouail
  * @version 1.0
  * @since 2023-12-01
  */
