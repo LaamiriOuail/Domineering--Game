@@ -11,17 +11,17 @@ public class Move {
     /**
      * The first position of the move.
      */
-    private Position position1 = null;
+    public Position position1 = null;
 
     /**
      * The second position of the move.
      */
-    private Position posotion2 = null;
+    public Position posotion2 = null;
 
     /**
      * The player making the move (1 or 2).
      */
-    private byte player = 0;
+    public byte player = 0;
 
     /**
      * Constructs a Move object with the specified positions and player.

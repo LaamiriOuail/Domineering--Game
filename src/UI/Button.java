@@ -11,7 +11,10 @@ import java.io.File;
  * @since 2023-12-01
  */
 public class Button extends JButton {
-    private String backgroundColor;
+    /**
+     * Background color of the button.
+     */
+    public String backgroundColor;
 
     /**
      * Constructs a Button with specified properties.
