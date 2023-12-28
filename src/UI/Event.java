@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * The Event class implements the ActionListener interface and handles button click events
  * for a user interface associated with the "Domineering" game.
- * @author Laamiri Ouail
+ * @author Laamiri Ouail & Hajar Sadik
  * @version 1.0
  * @since 2023-12-01
  */
@@ -147,7 +147,7 @@ public class Event implements ActionListener {
             if (!Objects.equals(Configuration.labelMessage.getText(), "")) {
                 Configuration.labelMessage.setText("");
                 Configuration.labelMessage.toVisible(false);
-                DomineeringGame.getInstance().finalizeSauvgardedFrame();
+                //DomineeringGame.getInstance().finalizeSauvgardedFrame();
             }
         }
         //file=StringTableFile.getInstance();
@@ -161,7 +161,7 @@ public class Event implements ActionListener {
                 makeMove(sourceButton);
                 if(Configuration.move==0){
                     Board board=new Board();
-                    int[] best=Configuration.domineeringSearch.minmax(board.getBoard(),7,true,new int[]{0},new int[]{10000000});
+                    int[] best=Configuration.domineeringSearch.minmax(board.getBoard(),3,true,new int[]{0},new int[]{10000000});
                     Configuration.domineeringSearch.playMove(best[1],best[2]);
                     if(Configuration.player==1){
                         Configuration.player=2;

@@ -2,7 +2,7 @@ package Helper;
 
 /**
  * Represents the game board for the Domineering game.
- * @author Laamiri Ouail
+ * @author Laamiri Ouail & Hajar Sadik
  * @version 1.0
  * @since 2023-12-01
  */

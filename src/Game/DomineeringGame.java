@@ -21,7 +21,7 @@ import java.util.Objects;
  * The DomineeringGame class represents the main game controller for the Domineering game.
  * It handles the main game window, settings, saved games, and the game logic.
  * This class uses the Singleton design pattern to ensure only one instance of the game is created.
- * @author Laamiri Ouail
+ * @author Laamiri Ouail & Hajar Sadik
  * @version 1.0
  * @since 2023-12-01
  */

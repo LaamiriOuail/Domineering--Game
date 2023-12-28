@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * The Sauvgard class represents a saved state in the game, including background colors,
  * title, formatted date and time, and the identifier of the machine.
- * @author Laamiri Ouail
+ * @author Laamiri Ouail & Hajar Sadik
  * @version 1.0
  * @since 2023-12-01
  */

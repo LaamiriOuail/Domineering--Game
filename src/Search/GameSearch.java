@@ -6,7 +6,7 @@ import Helper.Move;
 import java.util.List;
 /**
  * Interface for defining game search functionality.
- * @author Laamiri Ouail
+ * @author Laamiri Ouail & Hajar Sadik
  * @version 1.0
  * @since 2023-12-01
  */

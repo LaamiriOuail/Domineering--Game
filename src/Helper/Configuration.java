@@ -1,6 +1,7 @@
 package Helper;
 
 import Search.DomineeringSearch;
+import Search.GameSearch;
 import UI.Button;
 import UI.Label;
 
@@ -8,7 +9,7 @@ import java.awt.*;
 
 /**
  * Configuration class holds static variables and methods used throughout the Domineering game.
- * @author Laamiri Ouail
+ * @author Laamiri Ouail & Hajar Sadik
  * @version 1.0
  * @since 2023-12-01
  */
@@ -151,7 +152,7 @@ public abstract class Configuration {
     /**
      * Singleton instance of the DomineeringSearch class.
      */
-    public static DomineeringSearch domineeringSearch = DomineeringSearch.getInstance();
+    public static GameSearch domineeringSearch = DomineeringSearch.getInstance();
 
     /**
      * StringTableFile instance for file-related operations.

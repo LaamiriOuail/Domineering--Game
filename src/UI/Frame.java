@@ -5,7 +5,7 @@ import java.awt.*;
 
 /**
  * A custom JPanel that represents a frame with additional features for setting bounds and background color.
- * @author Laamiri Ouail
+ * @author Laamiri Ouail & Hajar Sadik
  * @version 1.0
  * @since 2023-12-01
  */
