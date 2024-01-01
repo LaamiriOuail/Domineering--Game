@@ -14,7 +14,7 @@ Domineering is a turn-based board game where two players take turns placing hori
 
 ```bash
 # development
-$ java -jar bin/domineering.jar
+$ java -jar bin/Domineering.jar
 ```
 
 
