@@ -22,3 +22,7 @@ $ java -jar bin/Domineering.jar
 - Author - [Ouail Laamiri](https://www.linkedin.com/in/ouaillaamiri/) 
 - Documentation - [Jdoc](https://laamiriouail.github.io/Domineering--Game/)
 - Download the Game - [Jar](https://drive.google.com/file/d/1XpbO-hPDwcZVYDoG1L2c-HU0BHQxJWqA/view?usp=sharing)
+
+## License
+
+Link-Service is [MIT licensed](LICENSE).
