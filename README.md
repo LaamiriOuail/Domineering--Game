@@ -9,11 +9,6 @@ Domineering is a turn-based board game where two players take turns placing hori
 
 **Turn-Based Gameplay**: Take turns with your opponent to place dominoes on the grid. Plan your moves carefully to outmaneuver your adversary.
 
-## Installation
-
-```bash
-$ npm install
-```
 
 ## Running the app
 
